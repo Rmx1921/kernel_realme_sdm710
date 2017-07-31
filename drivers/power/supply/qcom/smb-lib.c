@@ -41,6 +41,10 @@
 #include "../../oppo/oppo_short.h"
 #define OPPO_CHG_MONITOR_INTERVAL round_jiffies_relative(msecs_to_jiffies(5000))
 
+#ifdef CONFIG_FORCE_FAST_CHARGE
+#include <linux/fastchg.h>
+#endif
+
 struct oppo_chg_chip *g_oppo_chip = NULL;
 extern void smbchg_set_chargerid_switch_val(int value);
 extern 	bool oppo_get_otg_switch_status(void);
@@ -970,6 +974,13 @@ static int set_sdp_current(struct smb_charger *chg, int icl_ua)
 	int rc;
 	u8 icl_options;
 	const struct apsd_result *apsd_result = smblib_get_apsd_result(chg);
+
+#ifdef CONFIG_FORCE_FAST_CHARGE
+	if (force_fast_charge > 0 && icl_ua == USBIN_500MA)
+	{
+		icl_ua = USBIN_900MA;
+	}
+#endif
 
 	/* power source is SDP */
 	switch (icl_ua) {
