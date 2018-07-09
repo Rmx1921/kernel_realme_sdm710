@@ -96,3 +96,5 @@ obj-y				+= oppo_nf_hooks/
 #Add for apps network monitors
 obj-y				+= oppo_apps_monitor/
 #endif /* VENDOR_EDIT */
+
+subdir-ccflags-y := -Os
