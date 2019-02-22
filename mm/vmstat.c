@@ -1720,7 +1720,9 @@ static void __init start_shepherd_timer(void)
 		INIT_DEFERRABLE_WORK(per_cpu_ptr(&vmstat_work, cpu),
 			vmstat_update);
 
-	vmstat_wq = alloc_workqueue("vmstat", WQ_FREEZABLE|WQ_MEM_RECLAIM, 0);
+	vmstat_wq = alloc_workqueue("vmstat",
+		WQ_FREEZABLE | WQ_MEM_RECLAIM |
+		WQ_POWER_EFFICIENT, 0);
 	schedule_delayed_work(&shepherd,
 		round_jiffies_relative(sysctl_stat_interval));
 }
