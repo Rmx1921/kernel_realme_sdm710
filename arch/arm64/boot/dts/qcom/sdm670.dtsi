@@ -805,6 +805,16 @@
 			reg = <0x0 0x9e300000 0x0 0x0100000>;
 			label = "dfps_data_region";
 		};
+		
+		ramoops: ramoops@b5000000 {
+			compatible = "ramoops";
+			reg = <0 0xb5000000 0 0x00200000>;
+
+			console-size = <0x00080000>;
+			pmsg-size    = <0x00040000>;
+			record-size  = <0x00008000>;
+			ftrace-size  = <0x00020000>;
+		};
 
 		/* global autoconfigured region for contiguous allocations */
 		linux,cma {
