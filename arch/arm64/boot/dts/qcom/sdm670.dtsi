@@ -468,16 +468,9 @@
 					compatible = "android,vendor";
 					dev = "/dev/block/platform/soc/1d84000.ufshc/by-name/vendor";
 					type = "ext4";
-/*#if defined(VENDOR_EDIT) && defined(CONFIG_EXT4_ASYNC_DISCARD_SUPPORT)*/
-/*yh@PSW.BSP.Storage.EXT4, 2018-11-26 add for ext4 async discard suppot*/
 					mnt_flags = "ro,barrier=1,async_discard";
-/*#else*/
-					/*mnt_flags = "ro,barrier=1,discard";*/
-/*#endif*/
-					// #ifdef VENDOR_EDIT
-					// #Wanghao@BSP.Bootloader.Bootflow, 2018/04/26, add to disable A/B partition
-					fsmgr_flags = "wait";
-					// #endif
+                    fsmgr_flags = "wait";
+					status = "ok";
 				};
 			};
 #endif
@@ -3341,22 +3334,29 @@
 /* sdm670.dtsi */
 &clock_cpucc {
 	qcom,cpufreq-table-0 =
+		<300000>,
 		<576000>,
+		<748800>,
 		<998400>,
 		<1209600>,
+		<1324800>,
 		<1516800>,
 		<1612800>,
 		<1708800>;
 
 	qcom,cpufreq-table-6 =
+		<300000>,
 		<652800>,
+		<825600>,
 		<979200>,
 		<1132800>,
 		<1363200>,
 		<1536000>,
+		<1747200>,
 		<1843200>,
 		<1996800>,
 		<2054400>,
+		<2169600>,
 		<2208000>,
 		<2304000>;
 };
