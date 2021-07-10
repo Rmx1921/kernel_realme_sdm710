@@ -3782,6 +3782,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
 	unsigned int stall_timeout = 10 * HZ;
 	unsigned int cpuset_mems_cookie;
 	bool woke_kswapd = false;
+	bool used_vmpressure = false;
 #if defined(VENDOR_EDIT) && defined(CONFIG_OPPO_MEM_MONITOR)
 /* Huacai.Zhou@PSW.BSP.Kernel.MM, 2018-07-07, add alloc wait monitor support*/
 	unsigned long oppo_alloc_start = jiffies;
@@ -3835,6 +3836,8 @@ retry_cpuset:
 			atomic_long_inc(&kswapd_waiters);
 			woke_kswapd = true;
 		}
+		if (!used_vmpressure)
+			used_vmpressure = vmpressure_inc_users(order);
 		wake_all_kswapds(order, ac);
 		}
 
@@ -3942,6 +3945,8 @@ retry:
 
 
 	/* Try direct reclaim and then allocating */
+	if (!used_vmpressure)
+		used_vmpressure = vmpressure_inc_users(order);
 	page = __alloc_pages_direct_reclaim(gfp_mask, order, alloc_flags, ac,
 							&did_some_progress);
 	if (page)
@@ -4021,6 +4026,8 @@ nopage:
 got_pg:
 if (woke_kswapd)
 		atomic_long_dec(&kswapd_waiters);
+		if (used_vmpressure)
+		vmpressure_dec_users();
 	if (!page)
 		warn_alloc(gfp_mask,
 				"page allocation failure: order:%u", order);
