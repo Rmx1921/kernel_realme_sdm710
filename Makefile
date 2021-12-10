@@ -404,12 +404,6 @@ KBUILD_LDFLAGS_MODULE := -T $(srctree)/scripts/module-common.lds
 GCC_PLUGINS_CFLAGS :=
 CLANG_FLAGS :=
 
-# ifdef VENDOR_EDIT
-# jiangyg@OnlineRd.PM, 2013/10/15, add enviroment variant
-KBUILD_CFLAGS +=   -DVENDOR_EDIT
-KBUILD_CPPFLAGS += -DVENDOR_EDIT
-CFLAGS_KERNEL +=   -DVENDOR_EDIT
-CFLAGS_MODULE +=   -DVENDOR_EDIT
 #Added by guanling.yang@SCM.ROM，2015-11-23 add for disable fastboot modem at release soft
 #Ping.Liu@BSP.Fingerprint.Secure 2019/07/02, Modify for open fastboot unlock at all build, delete DISABLE_FASTBOOT_CMDS.
 
