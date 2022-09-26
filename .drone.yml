@@ -1,7 +1,7 @@
 ---
 kind: pipeline
 type: docker
-name: spiral_sdm710
+name: kernel_realme_sdm710
 
 platform:
   os: linux
