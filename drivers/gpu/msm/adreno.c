@@ -99,7 +99,7 @@ static struct adreno_device device_3d0 = {
 	.fw[1] = {
 		.fwvirt = NULL
 	},
-	.gmem_size = SZ_256K,
+	.gmem_size = SZ_512K,
 	.ft_policy = KGSL_FT_DEFAULT_POLICY,
 	.ft_pf_policy = KGSL_FT_PAGEFAULT_DEFAULT_POLICY,
 	.long_ib_detect = 1,
