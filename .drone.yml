@@ -21,6 +21,6 @@ steps:
       RELEASE_VERSION:
     commands:
       - apt-get update && apt-get install -y bison build-essential bc bison curl libssl-dev git zip python flex
-      -  git clone --depth=1 https://github.com/viciouspup/Drone-scripts.git script && cd script
+      -  git clone --branch proton https://github.com/Rmx1921/Drone-scripts.git script && cd script
       - bash setup-drone.sh --proton
       - bash build-kernel.sh --proton
