@@ -146,7 +146,7 @@
 
 			qcom,soc-hw-revision-0 {
 				qcom,soc-hw-revision = <0>;
-				qcom,chipid = <0x06010500>;
+				#qcom,chipid = <0x06010500>;
 				qcom,gpu-quirk-hfi-use-reg;
 				qcom,gpu-quirk-limit-uche-gbif-rw;
 				qcom,gpu-quirk-mmu-secure-cb-alt;
