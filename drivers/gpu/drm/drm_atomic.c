@@ -1863,17 +1863,6 @@ static void complete_crtc_signaling(struct drm_device *dev,
 	kfree(fence_state);
 }
 
-static void drm_kick_frame_boost(int timeout_ms)
-{
-	if (!timeout_ms)
-		return;
-
-	if (timeout_ms < 0 || should_kick_frame_boost(timeout_ms)) {
-		devfreq_boost_kick(DEVFREQ_MSM_CPUBW);
-		devfreq_boost_kick(DEVFREQ_MSM_GPUBW);
-	}
-}
-
 static int __drm_mode_atomic_ioctl(struct drm_device *dev, void *data,
 				   struct drm_file *file_priv)
 {
@@ -1919,8 +1908,6 @@ static int __drm_mode_atomic_ioctl(struct drm_device *dev, void *data,
 		
 		if (!(arg->flags & DRM_MODE_ATOMIC_TEST_ONLY))
 		devfreq_boost_kick(DEVFREQ_MSM_CPUBW);
-		devfreq_boost_kick(DEVFREQ_MSM_GPUBW);
-		drm_kick_frame_boost(frame_boost_timeout);
 		
 	drm_modeset_acquire_init(&ctx, 0);
 
