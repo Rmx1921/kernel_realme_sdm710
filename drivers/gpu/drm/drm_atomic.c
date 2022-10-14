@@ -32,13 +32,9 @@
 #include <drm/drm_plane_helper.h>
 #include <linux/pm_qos.h>
 #include <linux/sync_file.h>
-#include <linux/cpu_input_boost.h>
 #include <linux/devfreq_boost.h>
 
 #include "drm_crtc_internal.h"
-
-static int frame_boost_timeout __read_mostly = CONFIG_DRM_FRAME_BOOST_TIMEOUT;
-module_param(frame_boost_timeout, int, 0644);
 
 static void crtc_commit_free(struct kref *kref)
 {
