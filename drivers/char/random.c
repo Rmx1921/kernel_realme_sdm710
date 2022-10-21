@@ -300,7 +300,7 @@
 #define ENTROPY_SHIFT 3
 #define ENTROPY_BITS(r) ((r)->entropy_count >> ENTROPY_SHIFT)
 
-#ifdef CONFIG_SRANDOM
+fdef CONFIG_SRANDOM
 #include <../drivers/char/srandom/srandom.h>
 #endif
 
