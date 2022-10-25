@@ -286,7 +286,7 @@ static const struct freq_tbl  ftbl_gpu_cc_gx_gfx3d_clk_src_sdm845_v2[] = {
 };
 
 static const struct freq_tbl ftbl_gpu_cc_gx_gfx3d_clk_src_sdm670[] = {
-	F(180000000, P_CRC_DIV,  1, 0, 0),
+	F(170000000, P_CRC_DIV,  1, 0, 0),
 	F(267000000, P_CRC_DIV,  1, 0, 0),
 	F(355000000, P_CRC_DIV,  1, 0, 0),
 	F(414000000, P_CRC_DIV,  1, 0, 0),
@@ -316,7 +316,7 @@ static struct clk_rcg2 gpu_cc_gx_gfx3d_clk_src = {
 		.flags = CLK_SET_RATE_PARENT,
 		.ops =  &clk_rcg2_ops,
 		VDD_GX_FMAX_MAP8(
-			MIN, 147000000,
+			MIN, 137000000,
 			LOWER, 210000000,
 			LOW, 280000000,
 			LOW_L1, 338000000,
