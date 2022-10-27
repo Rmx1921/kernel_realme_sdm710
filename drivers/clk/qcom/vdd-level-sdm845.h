@@ -123,7 +123,7 @@ enum vdd_cx_levels {
 	VDD_CX_LOW_L1,		/* SVSL1 */
 	VDD_CX_NOMINAL,		/* NOM */
 	VDD_CX_HIGH,		/* TURBO */
-	VDD_GX_HIGH_L1,		/* TURBO1 */
+	VDD_CX_HIGH_L1,		/* TURBO1 */
 	VDD_CX_NUM,
 };
 
