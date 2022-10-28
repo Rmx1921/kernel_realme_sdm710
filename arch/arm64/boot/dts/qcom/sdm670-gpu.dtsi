@@ -259,7 +259,7 @@
 				};
 			};
 
-			qcom,gpu-pwrlevels-3 {
+			qcom,gpu-pwrlevels-5 {
 				#address-cells = <1>;
 				#size-cells = <0>;
 
