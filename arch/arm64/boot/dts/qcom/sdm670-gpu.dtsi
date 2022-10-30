@@ -266,12 +266,12 @@
 				qcom,speed-bin = <128>;
 
 				qcom,initial-pwrlevel = <7>;
-				qcom,ca-target-pwrlevel = <5>;
+				qcom,ca-target-pwrlevel = <6>;
 
 				/* TURBO_L1 */
 				qcom,gpu-pwrlevel@0 {
 					reg = <0>;
-					qcom,gpu-freq = <617000000>;
+					qcom,gpu-freq = <616000000>;
 					qcom,bus-freq = <11>;
 					qcom,bus-min = <10>;
 					qcom,bus-max = <11>;
