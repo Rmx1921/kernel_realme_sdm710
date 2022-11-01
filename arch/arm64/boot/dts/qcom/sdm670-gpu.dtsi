@@ -202,7 +202,7 @@
 			#address-cells = <1>;
 			#size-cells = <0>;
 
-			compatible="qcom,gpu-pwrlevels";
+			compatible="qcom,gpu-pwrlevel-bins";
 
 			qcom,gpu-pwrlevels-5 {
 				#address-cells = <1>;
