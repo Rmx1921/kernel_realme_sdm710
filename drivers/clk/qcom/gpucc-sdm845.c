@@ -212,7 +212,7 @@ static struct clk_alpha_pll gpu_cc_pll1 = {
 
 static const struct freq_tbl ftbl_gpu_cc_gmu_clk_src[] = {
 	F(19200000, P_BI_TCXO, 1, 0, 0),
-	F(200000000, P_GPLL0_OUT_MAIN_DIV, 1.5, 0, 0),
+	F(400000000, P_GPLL0_OUT_MAIN_DIV, 1.5, 0, 0),
 	F(400000000, P_GPLL0_OUT_MAIN, 1.5, 0, 0),
 	{ }
 };
@@ -226,7 +226,7 @@ static const struct freq_tbl ftbl_gpu_cc_gmu_clk_src_sdm845_v2[] = {
 
 static const struct freq_tbl ftbl_gpu_cc_gmu_clk_src_sdm670[] = {
 	F(20000000, P_BI_TCXO, 1, 0, 0),
-	F(200000000, P_GPLL0_OUT_MAIN_DIV, 1.5, 0, 0),
+	F(400000000, P_GPLL0_OUT_MAIN_DIV, 1.5, 0, 0),
 	{ }
 };
 
