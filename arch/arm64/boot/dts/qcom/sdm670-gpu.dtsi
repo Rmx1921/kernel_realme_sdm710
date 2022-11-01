@@ -198,7 +198,7 @@
 		 * is calulated as FMAX/4.8 MHz round up to zero
 		 * decimal places.
 		 */
-		qcom,gpu-pwrlevels {
+		qcom,gpu-pwrlevel-bins {
 			#address-cells = <1>;
 			#size-cells = <0>;
 
