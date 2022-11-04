@@ -10,8 +10,6 @@
  * GNU General Public License for more details.
  */
 
-#include "sdm670.dtsi"
-
 / {
 	model = "Qualcomm Technologies, Inc. SDM710";
 	compatible = "qcom,sdm670";
