@@ -24,7 +24,7 @@ jobs:
         NAME: spiral_rel
       with:
         arch: arm64
-        compiler: proton-clang/master
+        compiler: proton-clang/master/binutils
         defconfig: RMX1921_defconfig
         image: Image.gz-dtb
 
