@@ -29,7 +29,7 @@ jobs:
         image: Image.gz-dtb
 
     - name: Release build
-      uses: appleboy/telegram-action@master
+      uses: Rmx1921/telegram-action@master
       with:
         to: ${{ secrets.CHANNEL_ID }}
         token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
