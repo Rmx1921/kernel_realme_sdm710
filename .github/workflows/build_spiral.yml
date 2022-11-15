@@ -33,4 +33,5 @@ jobs:
       with:
         tag: v2.2
         artifacts: ${{ steps.build.outputs.outfile }}
+        artifactContentType: zip
         token: ${{ secrets.ITHUB_TOKEN }}
