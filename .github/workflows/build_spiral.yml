@@ -29,7 +29,9 @@ jobs:
         image: Image.gz-dtb
 
     - name: Release build
-      - uses: actions/upload-artifact@v3
-  with:
-    name: my-artifact
-    path: /github/workspace/zipper/*.zip
+      uses: ncipollo/release-action@v1
+      with:
+        tag: v2.2
+        artifacts: ${{ steps.build.outputs.outfile }}
+        artifactContentType: zip
+        token: ${{ secrets.ITHUB_TOKEN }}
