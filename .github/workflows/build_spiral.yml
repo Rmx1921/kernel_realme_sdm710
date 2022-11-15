@@ -31,5 +31,6 @@ jobs:
     - name: Release build
       uses: ncipollo/release-action@v1
       with:
+        tag: v2.2
         artifacts: ${{ steps.build.outputs.outfile }}
         token: ${{ secrets.ITHUB_TOKEN }}
