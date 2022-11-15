@@ -28,7 +28,8 @@ jobs:
         defconfig: RMX1921_defconfig
         image: Image.gz-dtb
 
-- uses: actions/upload-artifact@v3
+- name: upload
+ uses: actions/upload-artifact@v3
   with:
     name: my-artifact
     path: zipper/**
