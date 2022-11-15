@@ -28,7 +28,8 @@ jobs:
         defconfig: RMX1921_defconfig
         image: Image.gz-dtb
 
-     -name: Upload
+    - name: Upload Artifact
       uses: actions/upload-artifact@v3
       with:
+      name: static-site
       path: /github/workspace/zipper
