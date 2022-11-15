@@ -28,11 +28,9 @@ jobs:
         defconfig: RMX1921_defconfig
         image: Image.gz-dtb
         
-      - name: step 2 - Add artifacts to publish to the temp folder
+      - name: Add artifacts to publish to the temp folder
         run: |
-          cd /github/workspace/zipper
-          ls
-          cd ..
+              pwd
           
           - name: Release build
       uses: ncipollo/release-action@v1
