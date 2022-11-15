@@ -31,6 +31,5 @@ jobs:
     - name: Release build
       uses: ncipollo/release-action@v1
       with:
-        tag: 2.1
         artifacts: "/github/workspace/zipper/*.zip"
         token: ${{ secrets.ITHUB_TOKEN }}
