@@ -27,11 +27,10 @@ jobs:
         compiler: proton-clang/master/binutils
         defconfig: RMX1921_defconfig
         image: Image.gz-dtb
-
-- name: upload
- uses: actions/upload-artifact@v3
-  with:
-    name: my-artifact
-    path: zipper/**
-    if-no-files-found: error
-   retention-days: 90
+        
+- uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.ITHUB_TOKEN }}"
+          prerelease: false
+          files: |
+            *.zip
