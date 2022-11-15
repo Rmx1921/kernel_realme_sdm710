@@ -27,9 +27,6 @@ jobs:
         compiler: proton-clang/master/binutils
         defconfig: RMX1921_defconfig
         image: Image.gz-dtb
-
-    - name: Step 1 - Create a temporary artifact downloads folder
-        run: mkdir downloads
         
       - name: step 2 - Add artifacts to publish to the temp folder
         run: |
