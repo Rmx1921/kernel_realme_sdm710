@@ -28,9 +28,11 @@ jobs:
         defconfig: RMX1921_defconfig
         image: Image.gz-dtb
 
-    - name: Release build
-      uses: ncipollo/release-action@v1
-      with:
-        tag: 2.1
-        artifacts: "/github/workspace/zipper/Image.gz-dtb"
-        token: ${{ secrets.ITHUB_TOKEN }}
+    - name: Step 1 - Create a temporary artifact downloads folder
+        run: mkdir downloads
+        
+      - name: step 2 - Add artifacts to publish to the temp folder
+        run: |
+          cd /github/workspace/zipper
+          ls
+          cd ..
