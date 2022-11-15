@@ -21,7 +21,7 @@ jobs:
       uses: Rmx1921/android-kernel-actions@master
       id: build
       env:
-        NAME: spiral_rel
+        NAME: spiral
       with:
         arch: arm64
         compiler: proton-clang/master/binutils
@@ -33,3 +33,9 @@ jobs:
           cd /github/workspace/zipper
           ls
           cd ..
+          
+          - name: Release build
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: ${{ steps.build.outputs.outfile }}
+        token: ${{ secrets.ITHUB_TOKEN }}
