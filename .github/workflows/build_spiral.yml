@@ -28,10 +28,8 @@ jobs:
         defconfig: RMX1921_defconfig
         image: Image.gz-dtb
 
-    - name: Release build
-      uses: Rmx1921/telegram-action@master
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
       with:
-        to: ${{ secrets.TELEGRAM_TO }}
-        token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        message: Kernel is built!, took ${{ steps.build.outputs.elapsed_time }} seconds.
-        document: ${{ steps.build.outputs.outfile }}
+      name: kernel zip
+      path: /github/workspace/zipper/*.zip
