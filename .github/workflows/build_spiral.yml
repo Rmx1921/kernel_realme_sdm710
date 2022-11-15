@@ -21,16 +21,17 @@ jobs:
       uses: Rmx1921/android-kernel-actions@master
       id: build
       env:
-        NAME: spiral
+        NAME: spiral_rel
       with:
         arch: arm64
         compiler: proton-clang/master/binutils
         defconfig: RMX1921_defconfig
         image: Image.gz-dtb
 
-     - name: Release build
+    - name: Release build
       uses: ncipollo/release-action@v1
       with:
-      tags: v2.1
+        tag: v2.2
         artifacts: ${{ steps.build.outputs.outfile }}
+        artifactContentType: zip
         token: ${{ secrets.ITHUB_TOKEN }}
