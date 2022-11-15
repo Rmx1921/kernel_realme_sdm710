@@ -18,7 +18,7 @@ jobs:
         path: zipper
 
     - name: Android kernel build
-      uses: lemniskett/android-kernel-actions@master
+      uses: Rmx1921/android-kernel-actions@master
       id: build
       env:
         NAME: spiral_rel
