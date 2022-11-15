@@ -31,5 +31,5 @@ jobs:
     - name: Upload Artifact
       uses: actions/upload-artifact@v3
       with:
-      name: kernel
+      name: kernel zip
       path: /github/workspace/zipper/*.zip
