@@ -30,7 +30,9 @@ jobs:
         
     - name: pwd
          run: |
-              pwd
+          cd /zipper
+            ls
+           cd ..
 
     - name: Release build
       uses: ncipollo/release-action@v1
