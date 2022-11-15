@@ -27,12 +27,6 @@ jobs:
         compiler: proton-clang/master/binutils
         defconfig: RMX1921_defconfig
         image: Image.gz-dtb
-        
-    - name: pwd
-         run: |
-          cd /zipper
-            ls
-           cd ..
 
     - name: Release build
       uses: ncipollo/release-action@v1
