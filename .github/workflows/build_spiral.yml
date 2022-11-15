@@ -21,19 +21,20 @@ jobs:
       uses: Rmx1921/android-kernel-actions@master
       id: build
       env:
-        NAME: spiral
+        NAME: spiral_rel
       with:
         arch: arm64
         compiler: proton-clang/master/binutils
         defconfig: RMX1921_defconfig
         image: Image.gz-dtb
         
-      - name: Add artifacts to publish to the temp folder
-        run: |
+    - name: pwd
+         run: |
               pwd
-          
-          - name: Release build
+
+    - name: Release build
       uses: ncipollo/release-action@v1
       with:
-        artifacts: ${{ steps.build.outputs.outfile }}
+        tag: 2.1
+        artifacts: "/github/workspace/zipper/*.zip"
         token: ${{ secrets.ITHUB_TOKEN }}
