@@ -27,10 +27,10 @@ jobs:
         compiler: proton-clang/master/binutils
         defconfig: RMX1921_defconfig
         image: Image.gz-dtb
-        
-- uses: "marvinpinto/action-automatic-releases@latest"
-        with:
-          repo_token: "${{ secrets.ITHUB_TOKEN }}"
-          prerelease: false
-          files: |
-            *.zip
+
+    - name: Release build
+      uses: ncipollo/release-action@v1
+      with:
+        tag: 2.1
+        artifacts: "/github/workspace/zipper/*.zip"
+        token: ${{ secrets.ITHUB_TOKEN }}
