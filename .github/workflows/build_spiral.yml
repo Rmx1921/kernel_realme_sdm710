@@ -32,5 +32,5 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: spiral
-        path: 'github/workflow/Image.gz-dtb'
+        path: '/github/workspace/out/arch/arm64/boot/Image.gz-dtb'
         if-no-files-found: error
