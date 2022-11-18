@@ -28,9 +28,9 @@ jobs:
         defconfig: RMX1921_defconfig
         image: Image.gz-dtb
 
-    - name: Release build
-      uses: ncipollo/release-action@v1
+    - name: Upload kernel image artifact
+      uses: actions/upload-artifact@v2
       with:
-        tag: 2.1
-        artifacts: ${{ steps.build.outputs.outfile }}
-        token: ${{ secrets.ITHUB_TOKEN }}
+        name: spiral
+        path: 'github/workflow/zipper/Image.gz-dtb'
+        if-no-files-found: error
