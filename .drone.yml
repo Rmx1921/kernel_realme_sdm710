@@ -18,6 +18,8 @@ steps:
         from_secret: CI_CHANNEL_ID
       BOT_API_KEY:
         from_secret: BOT_API_KEY
+        PD_API_KEY:
+        from_secret: PD_API_KEY
       RELEASE_VERSION:
     commands:
       - apt-get update && apt-get install -y bison build-essential bc bison curl libssl-dev git zip python flex
