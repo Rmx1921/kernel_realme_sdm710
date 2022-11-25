@@ -392,7 +392,7 @@ struct sock {
 #endif
 	struct dst_entry	*sk_rx_dst;
 	struct dst_entry __rcu	*sk_dst_cache;
-	/* u32			sk_pacing_status; /* see enum sk_pacing */
+	/* Note: 32bit hole on 64bit arches */
 	atomic_t		sk_wmem_alloc;
 	atomic_t		sk_omem_alloc;
 	int			sk_sndbuf;
@@ -465,12 +465,6 @@ struct sock {
 	void                    (*sk_destruct)(struct sock *sk);
 	struct sock_reuseport __rcu	*sk_reuseport_cb;
 	struct rcu_head		sk_rcu;
-};
-
-enum sk_pacing {
-	SK_PACING_NONE		= 0,
-	SK_PACING_NEEDED	= 1,
-	SK_PACING_FQ		= 2,
 };
 
 #define __sk_user_data(sk) ((*((void __rcu **)&(sk)->sk_user_data)))
