@@ -66,10 +66,7 @@ CONFIG_JUMP_LABEL=y
 #else
 CONFIG_ARCH_MMAP_RND_COMPAT_BITS=11
 #endif /*VENDOR_EDIT*/
-CONFIG_MODULES=y
-CONFIG_MODULE_UNLOAD=y
-CONFIG_MODULE_FORCE_UNLOAD=y
-CONFIG_MODVERSIONS=y
+#CONFIG_MODULES is not set
 #ifdef VENDOR_EDIT
 #Yuanliu.Tang@PSW.CN.WiFi.Basic.SwitchWiFi.753697, 2016/07/13,
 #Remove for avoid signature issue cause WiFi switching fail
