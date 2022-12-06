@@ -1,23 +1,14 @@
 version: 2.1
 jobs:
-  compile:
-   docker:
-      - image: ubuntu:18.04
-   steps:
-      - run:
-          no_output_timeout: 50m 
-          command: |
-           apt-get update && DEBIAN_FRONTEND="noninteractive" TZ="America/New_York" apt-get install -y tzdata
-           apt-get -y update && apt-get -y upgrade && apt-get -y install python curl python python3 python3-pip tzdata build-essential bc bison flex gcc clang libc6 libstdc++6 libssl-dev zip p7zip-full git
-           git clone https://github.com/Rmx1921/ci_script -b wip
-           cd ci_script
-           git clone https://github.com/Rmx1921/Anykernel
-           git clone https://github.com/Rmx1921/kernel_realme_sdm710.git
-           git clone https://github.com/kdrag0n/proton-clang --depth=1
-   
-           bash ci_build.sh
-workflows:
-  version: 2.1
-  cooking:
-    jobs:
-      - compile
+  build:
+    machine:
+      image: ubuntu-2204:2022.10.2
+      resource_class: large
+    steps:
+      - run : sudo apt-get -y update && sudo apt-get -y install wget curl python2 python3 python3-pip tzdata build-essential bc bison flex gcc clang libc6 libstdc++6 libssl-dev zip p7zip-full git
+      - run : wget https://raw.githubusercontent.com/Rmx1921/ci_script/ubn/ci_build.sh 
+      - run : git clone https://github.com/Rmx1921/Anykernel
+      - run : git clone https://github.com/Rmx1921/kernel_realme_sdm710.git --depth=1
+      - run : git clone https://github.com/kdrag0n/proton-clang --depth=1
+      - run : ls /home/circleci/project/
+      - run : bash ci_build.sh
