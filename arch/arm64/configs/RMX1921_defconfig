@@ -88,7 +88,7 @@ CONFIG_PRIME_CPU_MASK=128
 CONFIG_PREEMPT=y
 #ifndef VENDOR_EDIT
 #wenbin.liu@PSW.BSP.MM, 2018/06/14 Delete for improve performance
-# CONFIG_HZ_100=y
+CONFIG_HZ_100=y
 # CONFIG_HZ_50 is not set
 # CONFIG_HZ_250 is not set
 #CONFIG_HZ_300 is not set
