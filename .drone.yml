@@ -1,0 +1,22 @@
+---
+clone:
+  depth: 1
+kind: pipeline
+name: kernel_realme_sdm710
+
+steps:
+  - name: building-sdm710
+    image: debian:stable-slim
+    environment:
+      CI_CHANNEL_ID:
+        from_secret: CI_CHANNEL_ID
+      BOT_API_KEY:
+        from_secret: BOT_API_KEY
+        PD_API_KEY:
+        from_secret: PD_API_KEY
+      RELEASE_VERSION:
+    commands:
+      - apt-get update && apt-get install -y bison build-essential bc bison curl libssl-dev git zip python flex
+      -  git clone --branch proton https://github.com/Rmx1921/Drone-scripts.git script && cd script
+      - bash setup-drone.sh --proton
+      - bash build-kernel.sh --proton
