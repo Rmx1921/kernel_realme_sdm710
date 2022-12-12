@@ -226,7 +226,7 @@ static const struct freq_tbl ftbl_gpu_cc_gmu_clk_src_sdm845_v2[] = {
 
 static const struct freq_tbl ftbl_gpu_cc_gmu_clk_src_sdm670[] = {
 	F(20000000, P_BI_TCXO, 1, 0, 0),
-	F(300000000, P_GPLL0_OUT_MAIN_DIV, 1.5, 0, 0),
+	F(200000000, P_GPLL0_OUT_MAIN_DIV, 1.5, 0, 0),
 	{ }
 };
 
@@ -617,7 +617,7 @@ static void gpu_cc_sdm845_fixup_sdm670(struct regmap *regmap)
 	clk_fabia_pll_configure(&gpu_cc_pll1, regmap, &gpu_cc_pll1_config);
 
 	gpu_cc_gmu_clk_src.freq_tbl = ftbl_gpu_cc_gmu_clk_src_sdm670;
-	gpu_cc_gmu_clk_src.clkr.hw.init->rate_max[VDD_CX_LOW] = 300000000;
+	gpu_cc_gmu_clk_src.clkr.hw.init->rate_max[VDD_CX_LOW] = 200000000;
 }
 
 static void gpu_cc_gfx_sdm845_fixup_sdm845v2(void)
