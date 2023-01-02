@@ -90,10 +90,10 @@ CONFIG_PREEMPT=y
 #wenbin.liu@PSW.BSP.MM, 2018/06/14 Delete for improve performance
 CONFIG_HZ_100 is not set
 # CONFIG_HZ_50 is not set
-# CONFIG_HZ_250=y
-#CONFIG_HZ_300 is not set
+# CONFIG_HZ_250 is not set
+CONFIG_HZ_300=y
 # CONFIG_HZ_1000 is not set
-CONFIG_HZ=250
+CONFIG_HZ=300
 #endif /*VENDOR_EDIT*/
 CONFIG_CMA=y
 CONFIG_ZSMALLOC=y
