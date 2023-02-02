@@ -78,8 +78,8 @@
 				qcom,mdss-dsi-v-back-porch = <16>;
 				qcom,mdss-dsi-v-front-porch = <20>;
 				qcom,mdss-dsi-v-pulse-width = <4>;
-				qcom,mdss-dsi-panel-framerate = <66>;
-				qcom,mdss-dsi-panel-clockrate = <1210000000>;
+				qcom,mdss-dsi-panel-framerate = <60>;
+				qcom,mdss-dsi-panel-clockrate = <1029000000>;
 				qcom,mdss-dsi-panel-phy-timings = [00 22 09 09 25 23 09 09 06 03 04 00];
 				qcom,display-topology = <1 0 1>;
 				qcom,default-topology-index = <0>;
