@@ -3,7 +3,6 @@ jobs:
   build:
     machine:
       image: ubuntu-2204:2023.04.2
-      resource_class: xlarge
     steps:
       - run: sudo apt-get -y update && sudo apt-get -y install wget curl python2 python3 python3-pip tzdata build-essential bc bison flex gcc clang libc6 libstdc++6 libssl-dev zip p7zip-full git
       - run: wget https://raw.githubusercontent.com/Rmx1921/ci_script/ubn/ci_build.sh
