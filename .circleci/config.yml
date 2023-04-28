@@ -2,13 +2,13 @@ version: 2.1
 jobs:
   build:
     machine:
-      image: ubuntu-2204:2022.10.2
-      resource_class: large
+      image: ubuntu-2204:2023.04.2
+      resource_class: xlarge
     steps:
-      - run : sudo apt-get -y update && sudo apt-get -y install wget curl python2 python3 python3-pip tzdata build-essential bc bison flex gcc clang libc6 libstdc++6 libssl-dev zip p7zip-full git
-      - run : wget https://raw.githubusercontent.com/Rmx1921/ci_script/ubn/ci_build.sh 
-      - run : git clone https://github.com/Rmx1921/Anykernel
-      - run : git clone https://github.com/Rmx1921/kernel_realme_sdm710.git --depth=1
-      - run : git clone https://github.com/kdrag0n/proton-clang --depth=1
-      - run : ls /home/circleci/project/
-      - run : bash ci_build.sh
+      - run: sudo apt-get -y update && sudo apt-get -y install wget curl python2 python3 python3-pip tzdata build-essential bc bison flex gcc clang libc6 libstdc++6 libssl-dev zip p7zip-full git
+      - run: wget https://raw.githubusercontent.com/Rmx1921/ci_script/ubn/ci_build.sh
+      - run: git clone https://github.com/Rmx1921/Anykernel
+      - run: git clone https://github.com/Rmx1921/kernel_realme_sdm710.git --depth=1
+      - run: git clone https://github.com/kdrag0n/proton-clang --depth=1
+      - run: ls /home/circleci/project/
+      - run: bash ci_build.sh
