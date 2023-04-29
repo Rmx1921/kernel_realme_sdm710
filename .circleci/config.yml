@@ -4,6 +4,7 @@ jobs:
   build:
     machine:
       image: ubuntu-2204:2023.04.2
+    resource_class: xlarge
     steps:
       - run:
           name: Update and Install Dependencies
