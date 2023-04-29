@@ -1,13 +1,33 @@
 version: 2.1
+
 jobs:
   build:
     machine:
       image: ubuntu-2204:2023.04.2
     steps:
-      - run: sudo apt-get -y update && sudo apt-get -y install wget curl python2 python3 python3-pip tzdata build-essential bc bison flex gcc clang libc6 libstdc++6 libssl-dev zip p7zip-full git
-      - run: wget https://raw.githubusercontent.com/Rmx1921/ci_script/ubn/ci_build.sh
-      - run: git clone https://github.com/Rmx1921/Anykernel
-      - run: git clone https://github.com/Rmx1921/kernel_realme_sdm710.git --depth=1
-      - run: git clone https://github.com/kdrag0n/proton-clang --depth=1
-      - run: ls /home/circleci/project/
-      - run: bash ci_build.sh
+      - run:
+          name: Update and Install Dependencies
+          command: |
+            sudo apt-get -y update && sudo apt-get -y install wget curl python2 python3 python3-pip tzdata build-essential bc bison flex gcc clang libc6 libstdc++6 libssl-dev zip p7zip-full git
+
+      - run:
+          name: Download Build Script
+          command: |
+            wget https://raw.githubusercontent.com/Rmx1921/ci_script/ubn/ci_build.sh
+
+      - run:
+          name: Clone Repository
+          command: |
+            git clone --depth 1 https://github.com/Rmx1921/Anykernel.git
+            git clone --depth 1 https://github.com/Rmx1921/kernel_realme_sdm710.git
+            git clone --depth 1 https://github.com/kdrag0n/proton-clang.git
+
+      - run:
+          name: Verify Project Directory
+          command: |
+            ls /home/circleci/project/
+
+      - run:
+          name: Build Kernel
+          command: |
+            bash ci_build.sh
