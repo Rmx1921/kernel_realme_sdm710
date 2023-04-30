@@ -20,4 +20,4 @@ jobs:
       - run:
           name: Build Kernel
           command: |
-            bash ci_build.sh
+            bash .circleci/script/build.sh
