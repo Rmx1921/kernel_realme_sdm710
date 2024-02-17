@@ -10,28 +10,37 @@ jobs:
           command: |
             sudo apt-get -y update
             sudo apt-get -y install wget curl python2 python3 python3-pip tzdata build-essential bc bison flex gcc clang libc6 libstdc++6 libssl-dev zip p7zip-full git
-            sudo apt-get -y upgrade
+            # Install needrestart or a similar tool if not already installed
+            # sudo apt-get -y install needrestart
+            # Configure all services to restart without asking
+            echo '* libraries/restart-without-asking boolean true' | sudo debconf-set-selections
+            # For non-interactive package installations/upgrades that might trigger restarts
+            export DEBIAN_FRONTEND=noninteractive
+
       - run:
           name: Download Build Script
           command: wget https://raw.githubusercontent.com/Rmx1921/ci_script/ubn/ci_build.sh
+
       - run:
           name: Clone Anykernel Repository
           command: git clone https://github.com/Rmx1921/Anykernel
+
       - run:
           name: Clone Kernel Source Repository
           command: git clone https://github.com/Rmx1921/kernel_realme_sdm710.git --depth=1
+
       - run:
           name: Clone Compiler Repository
           command: git clone https://github.com/kdrag0n/proton-clang --depth=1
+
       - run:
           name: List Project Directory Contents
           command: ls /home/circleci/project/
+
       - run:
           name: Execute Build Script
           command: |
-            # Use the `DEBIAN_FRONTEND` env var to avoid interactive prompts
+            # Continuing with non-interactive environment setup
             export DEBIAN_FRONTEND=noninteractive
-            # Optionally handle daemon restarts with `needrestart` or similar tool, if applicable
-            sudo apt-get install -y needrestart
-            sudo needrestart -r a
+            # Execute the build script
             bash ci_build.sh
