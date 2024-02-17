@@ -32,6 +32,6 @@ jobs:
             # Use the `DEBIAN_FRONTEND` env var to avoid interactive prompts
             export DEBIAN_FRONTEND=noninteractive
             # Optionally handle daemon restarts with `needrestart` or similar tool, if applicable
-            # sudo apt-get install -y needrestart
-            # sudo needrestart -r a
+            sudo apt-get install -y needrestart
+            sudo needrestart -r a
             bash ci_build.sh
