@@ -1,0 +1,49 @@
+name: Kernel CI Build
+
+on:
+  push:
+    branches:
+      - spiral  # or whichever branch you want to trigger the build
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      DEBIAN_FRONTEND: noninteractive
+      KBUILD_BUILD_USER: Rmx1921
+      KBUILD_BUILD_HOST: github
+      TYPE: CI
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+
+    steps:
+      - name: Checkout the current repo
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget curl bc bison flex gcc clang \
+            libssl-dev zip git build-essential tzdata python3 python3-pip p7zip-full \
+            libstdc++6
+
+      - name: Download Build Script
+        run: |
+          wget https://raw.githubusercontent.com/Rmx1921/ci_script/ubn/ci_build.sh
+          chmod +x ci_build.sh
+
+      - name: Clone AnyKernel Repository
+        run: git clone https://github.com/Rmx1921/Anykernel
+
+      - name: Clone Kernel Source Repository
+        run: git clone https://github.com/Rmx1921/kernel_realme_sdm710.git --depth=1
+
+      - name: Clone Compiler Repository
+        run: git clone https://github.com/kdrag0n/proton-clang --depth=1
+
+      - name: Run Build Script
+        run: |
+          export CIRCLE_BUILD_NUM=${{ github.run_number }}
+          bash ci_build.sh
