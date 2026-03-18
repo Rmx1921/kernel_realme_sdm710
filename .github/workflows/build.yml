@@ -14,9 +14,6 @@ jobs:
       DEBIAN_FRONTEND: noninteractive
       KBUILD_BUILD_USER: Rmx1921
       KBUILD_BUILD_HOST: github
-      TYPE: CI
-      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
 
     steps:
       - name: Checkout the current repo
@@ -24,26 +21,58 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install -y wget curl bc bison flex gcc clang \
-            libssl-dev zip git build-essential tzdata python3 python3-pip p7zip-full \
-            libstdc++6
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            bc bison flex libssl-dev zip git \
+            build-essential python3 libelf-dev
 
-      - name: Download Build Script
+      - name: Clone Compiler (proton-clang)
         run: |
-          wget https://raw.githubusercontent.com/Rmx1921/ci_script/ubn/ci_build.sh
-          chmod +x ci_build.sh
+          git clone --depth=1 https://github.com/kdrag0n/proton-clang $HOME/proton-clang
 
-      - name: Clone AnyKernel Repository
-        run: git clone https://github.com/Rmx1921/Anykernel
-
-      - name: Clone Kernel Source Repository
-        run: git clone https://github.com/Rmx1921/kernel_realme_sdm710.git --depth=1
-
-      - name: Clone Compiler Repository
-        run: git clone https://github.com/kdrag0n/proton-clang --depth=1
-
-      - name: Run Build Script
+      - name: Clone AnyKernel3
         run: |
-          export CIRCLE_BUILD_NUM=${{ github.run_number }}
-          bash ci_build.sh
+          git clone --depth=1 https://github.com/Rmx1921/Anykernel $HOME/AnyKernel3
+
+      - name: Build Kernel
+        run: |
+          export PATH="$HOME/proton-clang/bin:$PATH"
+          export ARCH=arm64
+          export SUBARCH=arm64
+          export CLANG_TRIPLE=aarch64-linux-gnu-
+          export CROSS_COMPILE=aarch64-linux-gnu-
+          export CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+
+          make O=out vendor/RMX1921_defconfig
+
+          make -j$(nproc --all) O=out \
+            CC=clang \
+            CLANG_TRIPLE=$CLANG_TRIPLE \
+            CROSS_COMPILE=$CROSS_COMPILE \
+            CROSS_COMPILE_ARM32=$CROSS_COMPILE_ARM32 \
+            2>&1 | tee build.log
+
+      - name: Package with AnyKernel3
+        run: |
+          cp out/arch/arm64/boot/Image.gz-dtb $HOME/AnyKernel3/
+          cd $HOME/AnyKernel3
+          BUILD_TIME=$(date +"%Y%m%d-%H%M")
+          ZIP_NAME="Kernel-RMX1921-${BUILD_TIME}.zip"
+          zip -r9 "$ZIP_NAME" . -x '*.git*'
+          echo "ZIP_PATH=$HOME/AnyKernel3/$ZIP_NAME" >> $GITHUB_ENV
+          echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
+
+      - name: Upload Kernel Zip as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ZIP_NAME }}
+          path: ${{ env.ZIP_PATH }}
+          retention-days: 7
+
+      - name: Upload Build Log as Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log-${{ github.run_number }}
+          path: build.log
+          retention-days: 3
