@@ -2363,7 +2363,6 @@ static void send_adm_cal_type(int cal_index, int path, int port_id,
 			      int acdb_id, int sample_rate)
 {
 	struct cal_block_data		*cal_block = NULL;
-	int ret;
 
 	pr_debug("%s: cal index %d\n", __func__, cal_index);
 
@@ -2379,7 +2378,7 @@ static void send_adm_cal_type(int cal_index, int path, int port_id,
 	if (cal_block == NULL)
 		goto unlock;
 
-	ret = adm_remap_and_send_cal_block(cal_index, port_id, copp_idx,
+	adm_remap_and_send_cal_block(cal_index, port_id, copp_idx,
 		cal_block, perf_mode, app_type, acdb_id, sample_rate);
 
 	cal_utils_mark_cal_used(cal_block);

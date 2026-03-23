@@ -767,7 +767,7 @@ static int msm_dig_cdc_hw_params(struct snd_pcm_substream *substream,
 				 struct snd_pcm_hw_params *params,
 				 struct snd_soc_dai *dai)
 {
-	u8 tx_fs_rate, rx_fs_rate, rx_clk_fs_rate;
+	u8 rx_fs_rate, rx_clk_fs_rate;
 	int ret;
 
 	dev_dbg(dai->codec->dev,
@@ -777,33 +777,27 @@ static int msm_dig_cdc_hw_params(struct snd_pcm_substream *substream,
 
 	switch (params_rate(params)) {
 	case 8000:
-		tx_fs_rate = 0x00;
 		rx_fs_rate = 0x00;
 		rx_clk_fs_rate = 0x00;
 		break;
 	case 16000:
-		tx_fs_rate = 0x20;
 		rx_fs_rate = 0x20;
 		rx_clk_fs_rate = 0x01;
 		break;
 	case 32000:
-		tx_fs_rate = 0x40;
 		rx_fs_rate = 0x40;
 		rx_clk_fs_rate = 0x02;
 		break;
 	case 44100:
 	case 48000:
-		tx_fs_rate = 0x60;
 		rx_fs_rate = 0x60;
 		rx_clk_fs_rate = 0x03;
 		break;
 	case 96000:
-		tx_fs_rate = 0x80;
 		rx_fs_rate = 0x80;
 		rx_clk_fs_rate = 0x04;
 		break;
 	case 192000:
-		tx_fs_rate = 0xA0;
 		rx_fs_rate = 0xA0;
 		rx_clk_fs_rate = 0x05;
 		break;
@@ -931,7 +925,6 @@ static int msm_dig_cdc_codec_enable_dec(struct snd_soc_dapm_widget *w,
 					int event)
 {
 	struct snd_soc_codec *codec = snd_soc_dapm_to_codec(w->dapm);
-	struct msm_asoc_mach_data *pdata = NULL;
 	unsigned int decimator;
 	struct msm_dig_priv *msm_dig_cdc = snd_soc_codec_get_drvdata(codec);
 	char *dec_name = NULL;
@@ -943,7 +936,7 @@ static int msm_dig_cdc_codec_enable_dec(struct snd_soc_dapm_widget *w,
 	int offset;
 	char *dec_num;
 
-	pdata = snd_soc_card_get_drvdata(codec->component.card);
+	snd_soc_card_get_drvdata(codec->component.card);
 	dev_dbg(codec->dev, "%s %d\n", __func__, event);
 
 	widget_name = kstrndup(w->name, 15, GFP_KERNEL);
