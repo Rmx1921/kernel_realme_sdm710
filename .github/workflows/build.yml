@@ -36,7 +36,7 @@ jobs:
 
       - name: Build Kernel
         run: |
-          export PATH="$HOME/proton-clang/bin:$PATH"
+          export PATH="/usr/bin:$HOME/proton-clang/bin:$PATH"
           export ARCH=arm64
           export SUBARCH=arm64
           export CLANG_TRIPLE=aarch64-linux-gnu-
@@ -44,8 +44,8 @@ jobs:
           export CROSS_COMPILE_ARM32=arm-linux-gnueabi-
           export HOSTCC=gcc
           export HOSTCXX=g++
-          export HOSTLD=ld.bfd
-          export LD=/usr/bin/ld
+          export HOSTLD=/usr/bin/ld.bfd
+          export LD=/usr/bin/ld.bfd
 
           make O=out vendor/RMX1921_defconfig
 
@@ -83,5 +83,6 @@ jobs:
           name: build-log-${{ github.run_number }}
           path: build.log
           retention-days: 3
+
 
 
