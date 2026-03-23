@@ -47,7 +47,7 @@ jobs:
           export HOSTLD=/usr/bin/ld.bfd
           export LD=/usr/bin/ld.bfd
 
-          make O=out vendor/RMX1921_defconfig
+          make O=out RMX1921_defconfig
 
           make -j$(nproc --all) O=out \
             CC=clang \
@@ -83,6 +83,7 @@ jobs:
           name: build-log-${{ github.run_number }}
           path: build.log
           retention-days: 3
+
 
 
 
