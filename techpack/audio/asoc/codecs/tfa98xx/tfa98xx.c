@@ -349,7 +349,6 @@ static void vol_gradual_change(struct work_struct *work)
 	struct tfa98xx *tfa98xx = container_of(work, struct tfa98xx,
 						vol_work.work);
 	u16 val;
-	int ret;
 
 	mutex_lock(&tfa98xx->dsp_lock);
 	val = snd_soc_read(tfa98xx->codec, TFA98XX_AUDIO_CTR);
@@ -359,17 +358,17 @@ static void vol_gradual_change(struct work_struct *work)
 	    /*John.Xu@PSW.MM.AudioDriver.SmartPA, 2016/02/27, Add for reduce vol for ct test*/
 	    if(0 == tfa98xx_profile) {
             pr_err("%s: reduce music vol because it is ct test build\n", __func__);
-            ret = snd_soc_write(tfa98xx->codec, TFA98XX_AUDIO_CTR, (0x0700& (TFA98XX_AUDIO_CTR_VOL_MSK)));
+            snd_soc_write(tfa98xx->codec, TFA98XX_AUDIO_CTR, (0x0700& (TFA98XX_AUDIO_CTR_VOL_MSK)));
 	    } else {
-            ret = snd_soc_write(tfa98xx->codec, TFA98XX_AUDIO_CTR, (val& (~TFA98XX_AUDIO_CTR_VOL_MSK)));
+            snd_soc_write(tfa98xx->codec, TFA98XX_AUDIO_CTR, (val& (~TFA98XX_AUDIO_CTR_VOL_MSK)));
 	    }
 	    #else
-        ret = snd_soc_write(tfa98xx->codec, TFA98XX_AUDIO_CTR, (val& (~TFA98XX_AUDIO_CTR_VOL_MSK)));
+        snd_soc_write(tfa98xx->codec, TFA98XX_AUDIO_CTR, (val& (~TFA98XX_AUDIO_CTR_VOL_MSK)));
 	    #endif
 	    val = snd_soc_read(tfa98xx->codec, TFA98XX_AUDIO_CTR);
 	} else {
         val -= 0x4000;
-        ret = snd_soc_write(tfa98xx->codec, TFA98XX_AUDIO_CTR, val);
+        snd_soc_write(tfa98xx->codec, TFA98XX_AUDIO_CTR, val);
         queue_delayed_work(tfa98xx->tfa98xx_wq, &tfa98xx->vol_work, msecs_to_jiffies(2));
 	}
 	mutex_unlock(&tfa98xx->dsp_lock);
@@ -1075,11 +1074,10 @@ static int tfa98xx_dbgfs_pga_gain_get(void *data, u64 *val)
 {
     struct i2c_client *i2c = (struct i2c_client *)data;
     struct tfa98xx *tfa98xx = i2c_get_clientdata(i2c);
-    int err;
     unsigned int value;
 
 /*    *val = TFA_GET_BF(tfa98xx->handle, SAAMGAIN);*/
-    err = regmap_read(tfa98xx->regmap, TFA98XX_CTRL_SAAM_PGA, &value);
+    regmap_read(tfa98xx->regmap, TFA98XX_CTRL_SAAM_PGA, &value);
     *val = (value & TFA98XX_CTRL_SAAM_PGA_SAAMGAIN_MSK) >>
                 TFA98XX_CTRL_SAAM_PGA_SAAMGAIN_POS;
     return 0;
@@ -1089,17 +1087,16 @@ static int tfa98xx_dbgfs_pga_gain_set(void *data, u64 val)
 {
     struct i2c_client *i2c = (struct i2c_client *)data;
     struct tfa98xx *tfa98xx = i2c_get_clientdata(i2c);
-    int err;
     unsigned int value;
 
     value = val & 0xffff;
     if (value > 7)
         return -EINVAL;
 /*    TFA_SET_BF(tfa98xx->handle, SAAMGAIN, value);*/
-    err = regmap_update_bits(tfa98xx->regmap, TFA98XX_CTRL_SAAM_PGA,
+    regmap_update_bits(tfa98xx->regmap, TFA98XX_CTRL_SAAM_PGA,
                 TFA98XX_CTRL_SAAM_PGA_SAAMGAIN_MSK,
                 value << TFA98XX_CTRL_SAAM_PGA_SAAMGAIN_POS);
-    return err;
+    return 0;
 }
 
 /* Direct registers access - provide register address in hex */
@@ -1108,10 +1105,8 @@ static int tfa98xx_dbgfs_reg_##__reg##_set(void *data, u64 val)        \
 {                                    \
     struct i2c_client *i2c = (struct i2c_client *)data;        \
     struct tfa98xx *tfa98xx = i2c_get_clientdata(i2c);        \
-    unsigned int ret, value;                    \
                                     \
-    ret = regmap_write(tfa98xx->regmap, 0x##__reg, (val & 0xffff));    \
-    value = val & 0xffff;                        \
+    regmap_write(tfa98xx->regmap, 0x##__reg, (val & 0xffff));    \
     return 0;                            \
 }                                    \
 static int tfa98xx_dbgfs_reg_##__reg##_get(void *data, u64 *val)    \
@@ -1119,8 +1114,8 @@ static int tfa98xx_dbgfs_reg_##__reg##_get(void *data, u64 *val)    \
     struct i2c_client *i2c = (struct i2c_client *)data;        \
     struct tfa98xx *tfa98xx = i2c_get_clientdata(i2c);        \
     unsigned int value;                        \
-    int ret;                            \
-    ret = regmap_read(tfa98xx->regmap, 0x##__reg, &value);        \
+                                    \
+    regmap_read(tfa98xx->regmap, 0x##__reg, &value);        \
     *val = value;                            \
     return 0;                            \
 }                                    \
