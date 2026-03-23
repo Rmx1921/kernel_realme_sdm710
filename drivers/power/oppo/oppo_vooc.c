@@ -64,7 +64,7 @@ int __attribute__((weak)) register_devinfo(char *name, struct manufacture_info *
 	return 1;
 }
 
-void oppo_vooc_battery_update()
+void oppo_vooc_battery_update(void)
 {
 	struct oppo_vooc_chip *chip = g_vooc_chip;
 /*
@@ -929,7 +929,6 @@ static int init_vooc_proc(struct oppo_vooc_chip *chip)
 }
 void oppo_vooc_init(struct oppo_vooc_chip *chip)
 {
-	int ret = 0;
 
 	chip->allow_reading = true;
 	chip->fastchg_started = false;
@@ -1110,7 +1109,7 @@ void oppo_vooc_set_fastchg_to_warm_false(void)
 	}
 }
 
-bool oppo_vooc_get_fastchg_low_temp_full()
+bool oppo_vooc_get_fastchg_low_temp_full(void)
 {
 	if (!g_vooc_chip) {
 		return false;

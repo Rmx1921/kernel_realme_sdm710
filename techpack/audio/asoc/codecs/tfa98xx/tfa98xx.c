@@ -1272,7 +1272,7 @@ static void tfa98xx_debug_remove(struct tfa98xx *tfa98xx)
 /*Ping.Zhang@PSW.MM.AudioDriver.SmartPA, 2016/07/20, Add for calibrate*/
 static int tfa98xx_speaker_recalibration(Tfa98xx_handle_t handle,unsigned int *speakerImpedance)
 {
-	int err, error = Tfa98xx_Error_Ok;
+	int error = Tfa98xx_Error_Ok;
 	/* Do not open/close tfa98xx: not required by tfa_clibrate */
 	error = tfa_calibrate(handle);
 	msleep_interruptible(25);
@@ -1284,7 +1284,7 @@ static int tfa98xx_speaker_recalibration(Tfa98xx_handle_t handle,unsigned int *s
 		pr_err("Calibration sucessful! \n");
 		*speakerImpedance = handles_local[handle].mohm[0];
 		if (TFA_GET_BF(handle, PWDN) != 0) {
-			   err = tfa98xx_powerdown(handle, 0);  //leave power off state
+			   tfa98xx_powerdown(handle, 0);  //leave power off state
 		   }
 		tfaRunUnmute(handle);	/* unmute */
 	}
