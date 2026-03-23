@@ -1753,12 +1753,9 @@ int tfaContGetCalProfile(int dev_idx) {
  * @return 1 if the profile is a tap profile or 0 if not
  */
 int tfaContIsTapProfile(int dev_idx, int prof_idx) {
-    int nprof;
-
     if ( (dev_idx < 0) || (dev_idx >= tfa98xx_cnt_max_device()) )
         return -1;
 
-    nprof = tfaContMaxProfile(dev_idx);
     /* Check if next profile is tap profile */
     if(strstr(tfaContProfileName(dev_idx, prof_idx), ".tap") != NULL) {
         pr_debug("Using Tap profile: '%s'\n", tfaContProfileName(dev_idx, prof_idx));
