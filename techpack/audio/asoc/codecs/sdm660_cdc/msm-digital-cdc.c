@@ -2756,3 +2756,5 @@ module_platform_driver(msm_digcodec_driver);
 
 MODULE_DESCRIPTION("MSM Audio Digital codec driver");
 MODULE_LICENSE("GPL v2");
+
+

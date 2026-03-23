@@ -2108,7 +2108,7 @@ static void do_header_and_snapshot(struct kgsl_device *device, int fault,
 		kgsl_device_snapshot(device, drawobj->context,
 					fault & ADRENO_GMU_FAULT);
         if (drawobj->context != NULL) {
-            pid = drawobj->context->proc_priv->pid;
+            pid = pid_nr(drawobj->context->proc_priv->pid);
             strlcpy(processname, drawobj->context->proc_priv->comm, TASK_COMM_LEN);
         }
 
@@ -3016,3 +3016,4 @@ int adreno_dispatcher_idle(struct adreno_device *adreno_dev)
 	adreno_dispatcher_schedule(device);
 	return ret;
 }
+
