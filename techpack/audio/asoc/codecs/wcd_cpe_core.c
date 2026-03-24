@@ -462,7 +462,6 @@ static int wcd_cpe_load_fw(struct wcd_cpe_core *core,
 {
 
 	int ret, phdr_idx;
-	struct snd_soc_codec *codec = NULL;
 	const struct elf32_hdr *ehdr;
 	const struct elf32_phdr *phdr;
 	const struct firmware *fw;
@@ -475,7 +474,6 @@ static int wcd_cpe_load_fw(struct wcd_cpe_core *core,
 		       core);
 		return -EINVAL;
 	}
-	codec = core->codec;
 	snprintf(mdt_name, sizeof(mdt_name), "%s.mdt", core->fname);
 	ret = request_firmware(&fw, mdt_name, core->dev);
 	if (ret < 0) {
