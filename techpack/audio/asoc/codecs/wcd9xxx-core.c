@@ -970,7 +970,7 @@ static int wcd9xxx_i2c_probe(struct i2c_client *client,
 	int val = 0;
 	int ret = 0;
 	int wcd9xx_index = 0;
-	struct device *dev;
+int intf_type;
 	const struct of_device_id *of_id;
 
 	intf_type = wcd9xxx_get_intf_type();
