@@ -45,36 +45,26 @@ jobs:
 
       - name: Build Kernel
         run: |
-          export PATH="$HOME/proton-clang/bin:$PATH"
+          CLANG_BIN="$HOME/proton-clang/bin"
+          export PATH="$PATH:$CLANG_BIN"
           export ARCH=arm64
           export SUBARCH=arm64
           export KEBABS=$(($(nproc --all) * 2))
           export OUT_DIR=out
 
-          # Force host tools to use system tools
-          export HOSTCC=gcc
-          export HOSTCXX=g++
-          export HOSTLD=/usr/bin/ld.bfd
-
           # Make defconfig
           make ARCH=arm64 \
             O=$OUT_DIR \
             RMX1921_defconfig \
-            HOSTCC=$HOSTCC \
-            HOSTCXX=$HOSTCXX \
-            HOSTLD=$HOSTLD \
             -j$KEBABS
 
           # Full Kernel Build
           make ARCH=arm64 \
             O=$OUT_DIR \
-            CC="clang" \
+            CC="$CLANG_BIN/clang" \
             CLANG_TRIPLE="aarch64-linux-gnu-" \
             CROSS_COMPILE_ARM32="arm-linux-gnueabi-" \
             CROSS_COMPILE="aarch64-linux-gnu-" \
-            HOSTCC=$HOSTCC \
-            HOSTCXX=$HOSTCXX \
-            HOSTLD=$HOSTLD \
             -j$KEBABS \
             WERROR=0 \
             2>&1 | tee build.log
