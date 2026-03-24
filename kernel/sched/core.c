@@ -1774,7 +1774,7 @@ static int migration_cpu_stop(void *data)
 	struct migration_arg *arg = data;
 	struct task_struct *p = arg->task;
 	struct rq *rq = this_rq();
-	bool moved = false;
+	struct rq *rq = this_rq();
 
 	/*
 	 * The original target cpu might have gone down and we might
@@ -1798,7 +1798,6 @@ static int migration_cpu_stop(void *data)
 	if (task_rq(p) == rq) {
 		if (task_on_rq_queued(p)) {
 			rq = __migrate_task(rq, p, arg->dest_cpu);
-			moved = true;
 		} else {
 			p->wake_cpu = arg->dest_cpu;
 		}
@@ -2831,8 +2830,6 @@ try_to_wake_up(struct task_struct *p, unsigned int state, int wake_flags)
 	u64 wallclock;
 	struct related_thread_group *grp = NULL;
 	int src_cpu;
-	bool notif_required = false;
-	bool check_group = false;
 #endif
 
 	/*
@@ -2920,7 +2917,6 @@ try_to_wake_up(struct task_struct *p, unsigned int state, int wake_flags)
 	if (update_preferred_cluster(grp, p, old_load))
 		set_preferred_cluster(grp);
 	rcu_read_unlock();
-	check_group = grp != NULL;
 
 	p->sched_contributes_to_load = !!task_contributes_to_load(p);
 	p->state = TASK_WAKING;
@@ -2931,7 +2927,6 @@ try_to_wake_up(struct task_struct *p, unsigned int state, int wake_flags)
 		wake_flags |= WF_MIGRATED;
 		psi_ttwu_dequeue(p);
 		set_task_cpu(p, cpu);
-		notif_required = true;
 	}
 
 	note_task_waking(p, wallclock);

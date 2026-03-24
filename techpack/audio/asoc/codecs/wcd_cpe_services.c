@@ -1295,7 +1295,6 @@ static enum cpe_process_result cpe_mt_process_cmd(
 	enum cpe_process_result rc = CPE_PROC_SUCCESS;
 	struct cpe_send_msg *m;
 	struct cmi_hdr *hdr;
-	u8 service = 0;
 	u8 retries = 0;
 
 	if (!t_info || !command_node) {
@@ -1351,8 +1350,6 @@ static enum cpe_process_result cpe_mt_process_cmd(
 		break;
 
 	case CPE_CMD_SEND_MSG_COMPLETE:
-		hdr = CMI_GET_HEADER(t_info->tgt->outbox);
-		service = CMI_HDR_GET_SERVICE(hdr);
 		pr_debug("%s: msg send success, notifying clients\n",
 			 __func__);
 		cpe_command_cleanup(command_node);

@@ -1716,13 +1716,10 @@ static void update_history(struct rq *rq, struct task_struct *p,
 	int ridx, widx;
 	u32 max = 0, avg, demand, pred_demand;
 	u64 sum = 0;
-	u64 prev_demand;
 
 	/* Ignore windows where task had no activity */
 	if (!runtime || is_idle_task(p) || exiting_task(p) || !samples)
 		goto done;
-
-	prev_demand = p->ravg.demand;
 
 	/* Push new 'runtime' value onto stack */
 	widx = sched_ravg_hist_size - 1;

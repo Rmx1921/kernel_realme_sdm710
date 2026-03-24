@@ -10796,7 +10796,6 @@ static int active_load_balance_cpu_stop(void *data)
 		.flags			= 0,
 		.loop			= 0,
 	};
-	bool moved = false;
 
 	raw_spin_lock_irq(&busiest_rq->lock);
 
@@ -10825,7 +10824,6 @@ static int active_load_balance_cpu_stop(void *data)
 					cpu_online(target_cpu)) {
 			detach_task(push_task, &env);
 			push_task_detached = 1;
-			moved = true;
 		}
 		goto out_unlock;
 	}
@@ -10847,7 +10845,6 @@ static int active_load_balance_cpu_stop(void *data)
 			schedstat_inc(sd->alb_pushed);
 			/* Active balancing done, reset the failure counter. */
 			sd->nr_balance_failed = 0;
-			moved = true;
 		} else {
 			schedstat_inc(sd->alb_failed);
 		}

@@ -239,6 +239,9 @@ static int do_fsync(unsigned int fd, int datasync)
 {
 	struct fd f = fdget(fd);
 	int ret = -EBADF;
+#if defined(VENDOR_EDIT) && defined(CONFIG_OPPO_HEALTHINFO)
+	unsigned long oppo_fsync_time;
+#endif /*VENDOR_EDIT*/
 
 	if (!fsync_enabled)
 		return 0;
@@ -246,7 +249,7 @@ static int do_fsync(unsigned int fd, int datasync)
 #if defined(VENDOR_EDIT) && defined(CONFIG_OPPO_HEALTHINFO)
 // wenbin.liu@PSW.BSP.MM, 2018/08/06
 // Add for record  fsync  time
-    unsigned long oppo_fsync_time = jiffies;
+    oppo_fsync_time = jiffies;
 #endif /*VENDOR_EDIT*/
 
 	if (f.file) {

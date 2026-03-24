@@ -2443,7 +2443,6 @@ static void rcu_report_unblock_qs_rnp(struct rcu_state *rsp,
 	__releases(rnp->lock)
 {
 	unsigned long gps;
-	unsigned long mask;
 	struct rcu_node *rnp_p;
 
 	if (rcu_state_p == &rcu_sched_state || rsp != rcu_state_p ||
@@ -2464,10 +2463,9 @@ static void rcu_report_unblock_qs_rnp(struct rcu_state *rsp,
 
 	/* Report up the rest of the hierarchy, tracking current ->gpnum. */
 	gps = rnp->gpnum;
-	mask = rnp->grpmask;
 	raw_spin_unlock_rcu_node(rnp);	/* irqs remain disabled. */
 	raw_spin_lock_rcu_node(rnp_p);	/* irqs already disabled. */
-	rcu_report_qs_rnp(mask, rsp, rnp_p, gps, flags);
+	rcu_report_qs_rnp(rnp->grpmask, rsp, rnp_p, gps, flags);
 }
 
 /*
@@ -3788,7 +3786,6 @@ static void
 rcu_init_percpu_data(int cpu, struct rcu_state *rsp)
 {
 	unsigned long flags;
-	unsigned long mask;
 	struct rcu_data *rdp = per_cpu_ptr(rsp->rda, cpu);
 	struct rcu_node *rnp = rcu_get_root(rsp);
 
@@ -3811,7 +3808,6 @@ rcu_init_percpu_data(int cpu, struct rcu_state *rsp)
 	 * of the next grace period.
 	 */
 	rnp = rdp->mynode;
-	mask = rdp->grpmask;
 	raw_spin_lock_rcu_node(rnp);		/* irqs already disabled. */
 	if (!rdp->beenonline)
 		WRITE_ONCE(rsp->ncpus, READ_ONCE(rsp->ncpus) + 1);
