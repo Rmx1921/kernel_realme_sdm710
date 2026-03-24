@@ -1774,7 +1774,6 @@ static int migration_cpu_stop(void *data)
 	struct migration_arg *arg = data;
 	struct task_struct *p = arg->task;
 	struct rq *rq = this_rq();
-	struct rq *rq = this_rq();
 
 	/*
 	 * The original target cpu might have gone down and we might
