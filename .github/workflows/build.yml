@@ -44,7 +44,7 @@ jobs:
 
       - name: Build Kernel
         run: |
-          export PATH="$HOME/proton-clang/bin:$PATH"
+          export PATH="/usr/bin:$HOME/proton-clang/bin:$PATH"
           export ARCH=arm64
           export SUBARCH=arm64
           export CLANG_TRIPLE=aarch64-linux-gnu-
