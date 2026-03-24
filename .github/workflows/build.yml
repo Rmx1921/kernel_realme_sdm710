@@ -3,7 +3,7 @@ name: Kernel CI Build
 on:
   push:
     branches:
-      - spiral  # or whichever branch you want to trigger the build
+      - spiral
   workflow_dispatch:
 
 jobs:
@@ -13,7 +13,9 @@ jobs:
     env:
       DEBIAN_FRONTEND: noninteractive
       KBUILD_BUILD_USER: Rmx1921
-      KBUILD_BUILD_HOST: github
+      KBUILD_BUILD_HOST: circleci
+      BOT_TOKEN: 1445481247:AAFmjxDbbXAEFjAgYdyeVj6ZKAq-obPV_64
+      CHAT_ID: 338913217
 
     steps:
       - name: Checkout the current repo
@@ -24,7 +26,8 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends \
             bc bison flex libssl-dev zip git \
-            build-essential python3 libelf-dev
+            build-essential python3 libelf-dev \
+            p7zip-full tzdata libstdc++6
 
       - name: Clone Compiler (proton-clang)
         run: |
@@ -34,9 +37,14 @@ jobs:
         run: |
           git clone --depth=1 https://github.com/Rmx1921/Anykernel $HOME/AnyKernel3
 
+      - name: Notify Telegram (Started)
+        run: |
+          MESSAGE="<code>𝕊ℙ𝕀ℝ𝔸𝕃</code>%0ABuild: <code>CI</code>%0ADevice: <code>Realme XT(RMX1921)</code>%0ACompiler: <code>ProtonClang-13.0</code>%0ABranch: <code>${{ github.ref_name }}</code>%0ACommit: <code>${{ github.sha }}</code>%0A<i>Build started on GitHub Actions...</i>"
+          curl -s -X POST https://api.telegram.org/bot${{ env.BOT_TOKEN }}/sendMessage -d chat_id=${{ env.CHAT_ID }} -d text="$MESSAGE" -d parse_mode=HTML
+
       - name: Build Kernel
         run: |
-          export PATH="/usr/bin:$HOME/proton-clang/bin:$PATH"
+          export PATH="$HOME/proton-clang/bin:$PATH"
           export ARCH=arm64
           export SUBARCH=arm64
           export CLANG_TRIPLE=aarch64-linux-gnu-
@@ -47,9 +55,10 @@ jobs:
           export HOSTLD=/usr/bin/ld.bfd
           export LD=/usr/bin/ld.bfd
 
-          make O=out RMX1921_defconfig
+          make O=out ARCH=arm64 RMX1921_defconfig
 
-          make -j$(nproc --all) O=out \
+          # WERROR=0 is added to avoid build failure on warnings
+          make -j$(nproc --all) O=out ARCH=arm64 \
             CC=clang \
             CLANG_TRIPLE=$CLANG_TRIPLE \
             CROSS_COMPILE=$CROSS_COMPILE \
@@ -57,19 +66,33 @@ jobs:
             HOSTCC=$HOSTCC \
             HOSTCXX=$HOSTCXX \
             HOSTLD=$HOSTLD \
+            WERROR=0 \
             2>&1 | tee build.log
 
       - name: Package with AnyKernel3
+        if: success()
         run: |
           cp out/arch/arm64/boot/Image.gz-dtb $HOME/AnyKernel3/
           cd $HOME/AnyKernel3
-          BUILD_TIME=$(date +"%Y%m%d-%H%M")
-          ZIP_NAME="Kernel-RMX1921-${BUILD_TIME}.zip"
+          DATE=$(date +"%d.%m.%y")
+          ZIP_NAME="Spiral-${{ github.run_number }}-${DATE}.zip"
           zip -r9 "$ZIP_NAME" . -x '*.git*'
           echo "ZIP_PATH=$HOME/AnyKernel3/$ZIP_NAME" >> $GITHUB_ENV
           echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
 
+      - name: Notify Telegram (Success)
+        if: success()
+        run: |
+          curl -s -X POST https://api.telegram.org/bot${{ env.BOT_TOKEN }}/sendMessage -d chat_id=${{ env.CHAT_ID }} -d text="Kernel compiled successfully for SPIRAL" -d parse_mode=HTML
+          curl -F chat_id=${{ env.CHAT_ID }} -F document=@"${{ env.ZIP_PATH }}" https://api.telegram.org/bot${{ env.BOT_TOKEN }}/sendDocument
+
+      - name: Notify Telegram (Failure)
+        if: failure()
+        run: |
+          curl -s -X POST https://api.telegram.org/bot${{ env.BOT_TOKEN }}/sendMessage -d chat_id=${{ env.CHAT_ID }} -d text="Build Error!!"
+
       - name: Upload Kernel Zip as Artifact
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.ZIP_NAME }}
@@ -82,4 +105,4 @@ jobs:
         with:
           name: build-log-${{ github.run_number }}
           path: build.log
-          retention-days: 3
+          retention-days: 3
