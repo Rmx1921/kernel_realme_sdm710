@@ -590,7 +590,6 @@ static int wdsp_register_cmpnt_ops(struct device *wdsp_dev,
 	if (i == WDSP_CMPNT_TYPE_MAX) {
 		WDSP_ERR(wdsp, "Failed to register component dev %s",
 			 dev_name(cdev));
-		ret = -EINVAL;
 		goto done;
 	}
 
