@@ -463,13 +463,11 @@ static int wcd_cpe_load_fw(struct wcd_cpe_core *core,
 
 	int ret, phdr_idx;
 	struct snd_soc_codec *codec = NULL;
-	struct wcd9xxx *wcd9xxx = NULL;
 	const struct elf32_hdr *ehdr;
 	const struct elf32_phdr *phdr;
 	const struct firmware *fw;
 	const u8 *elf_ptr;
 	char mdt_name[64];
-	bool img_dload_fail = false;
 	bool load_segment;
 
 	if (!core || !core->cpe_handle) {
@@ -478,7 +476,6 @@ static int wcd_cpe_load_fw(struct wcd_cpe_core *core,
 		return -EINVAL;
 	}
 	codec = core->codec;
-	wcd9xxx = dev_get_drvdata(codec->dev->parent);
 	snprintf(mdt_name, sizeof(mdt_name), "%s.mdt", core->fname);
 	ret = request_firmware(&fw, mdt_name, core->dev);
 	if (ret < 0) {
@@ -546,7 +543,6 @@ static int wcd_cpe_load_fw(struct wcd_cpe_core *core,
 				dev_err(core->dev,
 					"Failed to load segment %d, aborting img dload\n",
 					phdr_idx);
-				img_dload_fail = true;
 				goto rel_bus_vote;
 			}
 		} else {
@@ -1340,7 +1336,6 @@ static void wcd_cpe_svc_event_cb(const struct cpe_svc_notification *param)
 	struct snd_soc_codec *codec;
 	struct wcd_cpe_core *core;
 	struct cpe_svc_boot_event *boot_data;
-	bool active_sessions;
 
 	if (!param) {
 		pr_err("%s: Invalid event\n", __func__);
@@ -1392,7 +1387,6 @@ static void wcd_cpe_svc_event_cb(const struct cpe_svc_notification *param)
 		    core->ssr_type != WCD_CPE_BUS_DOWN_EVENT)
 			break;
 
-		active_sessions = wcd_cpe_lsm_session_active();
 		wcd_cpe_change_online_state(core, 0);
 		complete(&core->offline_compl);
 		dev_err(core->dev, "%s: CPE is now offline\n",
