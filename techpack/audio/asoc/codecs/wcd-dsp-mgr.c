@@ -569,7 +569,7 @@ static int wdsp_register_cmpnt_ops(struct device *wdsp_dev,
 {
 	struct wdsp_mgr_priv *wdsp;
 	struct wdsp_cmpnt *cmpnt;
-	int i, ret;
+	int i;
 
 	if (!wdsp_dev || !cdev || !ops)
 		return -EINVAL;

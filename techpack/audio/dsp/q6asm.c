@@ -7173,6 +7173,7 @@ int q6asm_memory_map(struct audio_client *ac, phys_addr_t buf_add, int dir,
 	struct asm_buffer_node *buffer_node = NULL;
 	int	rc = 0;
 	int	cmd_size = 0;
+	struct audio_port_data *port;
 
 	if (!ac) {
 		pr_err("%s: APR handle NULL\n", __func__);
@@ -8803,6 +8804,7 @@ int q6asm_async_write(struct audio_client *ac,
 	struct asm_buffer_node *buf_node = NULL;
 	struct list_head *ptr, *next;
 	struct audio_port_data     *port;
+	struct audio_buffer        *ab;
 	phys_addr_t lbuf_phys_addr;
 	u32 liomode;
 	u32 io_compressed;
