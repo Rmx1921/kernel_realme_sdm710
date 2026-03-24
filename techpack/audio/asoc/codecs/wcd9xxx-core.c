@@ -851,7 +851,6 @@ static int wcd9xxx_i2c_write_device(struct wcd9xxx *wcd9xxx, u16 reg, u8 *value,
 
 	struct i2c_msg *msg;
 	int ret = 0;
-	u8 reg_addr = 0;
 	u8 data[bytes + 1];
 	struct wcd9xxx_i2c *wcd9xxx_i2c;
 
@@ -860,7 +859,6 @@ static int wcd9xxx_i2c_write_device(struct wcd9xxx *wcd9xxx, u16 reg, u8 *value,
 		pr_err("failed to get device info\n");
 		return -ENODEV;
 	}
-	reg_addr = (u8)reg;
 	msg = &wcd9xxx_i2c->xfer_msg[0];
 	msg->addr = wcd9xxx_i2c->client->addr;
 	msg->len = bytes + 1;
@@ -973,7 +971,6 @@ static int wcd9xxx_i2c_probe(struct i2c_client *client,
 	int ret = 0;
 	int wcd9xx_index = 0;
 	struct device *dev;
-	int intf_type;
 	const struct of_device_id *of_id;
 
 	intf_type = wcd9xxx_get_intf_type();
@@ -996,7 +993,6 @@ static int wcd9xxx_i2c_probe(struct i2c_client *client,
 		}
 		return ret;
 	} else if (intf_type == WCD9XXX_INTERFACE_TYPE_PROBING) {
-		dev = &client->dev;
 		if (client->dev.of_node) {
 			dev_dbg(&client->dev, "%s:Platform data\n"
 				"from device tree\n", __func__);
