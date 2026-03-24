@@ -7173,7 +7173,6 @@ int q6asm_memory_map(struct audio_client *ac, phys_addr_t buf_add, int dir,
 	struct asm_buffer_node *buffer_node = NULL;
 	int	rc = 0;
 	int	cmd_size = 0;
-	struct audio_port_data *port;
 
 	if (!ac) {
 		pr_err("%s: APR handle NULL\n", __func__);
@@ -7211,7 +7210,6 @@ int q6asm_memory_map(struct audio_client *ac, phys_addr_t buf_add, int dir,
 	mregions = (struct avs_shared_map_region_payload *)payload;
 
 	ac->port[dir].tmp_hdl = 0;
-	port = &ac->port[dir];
 	pr_debug("%s: buf_add 0x%pK, bufsz: %d\n", __func__,
 		&buf_add, bufsz);
 	mregions->shm_addr_lsw = lower_32_bits(buf_add);
@@ -8803,8 +8801,6 @@ int q6asm_async_write(struct audio_client *ac,
 	struct asm_data_cmd_write_v2 write;
 	struct asm_buffer_node *buf_node = NULL;
 	struct list_head *ptr, *next;
-	struct audio_port_data     *port;
-	struct audio_buffer        *ab;
 	phys_addr_t lbuf_phys_addr;
 	u32 liomode;
 	u32 io_compressed;
@@ -8821,8 +8817,6 @@ int q6asm_async_write(struct audio_client *ac,
 
 	q6asm_stream_add_hdr_async(
 			ac, &write.hdr, sizeof(write), TRUE, ac->stream_id);
-	port = &ac->port[IN];
-	ab = &port->buf[port->dsp_buf];
 
 	/* Pass session id as token for AIO scheme */
 	write.hdr.token = param->uid;

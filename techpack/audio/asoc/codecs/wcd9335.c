@@ -4530,7 +4530,6 @@ static int tasha_codec_lineout_dac_event(struct snd_soc_dapm_widget *w,
 {
 	struct snd_soc_codec *codec = snd_soc_dapm_to_codec(w->dapm);
 	struct tasha_priv *tasha = snd_soc_codec_get_drvdata(codec);
-	int ret = 0;
 
 	dev_dbg(codec->dev, "%s %s %d\n", __func__, w->name, event);
 
@@ -4539,7 +4538,7 @@ static int tasha_codec_lineout_dac_event(struct snd_soc_dapm_widget *w,
 		if (tasha->anc_func &&
 			(!strcmp(w->name, "RX INT3 DAC") ||
 				!strcmp(w->name, "RX INT4 DAC")))
-			ret = tasha_codec_enable_anc(w, kcontrol, event);
+			tasha_codec_enable_anc(w, kcontrol, event);
 
 		wcd_clsh_fsm(codec, &tasha->clsh_d,
 			     WCD_CLSH_EVENT_PRE_DAC,
@@ -13146,7 +13145,7 @@ static void tasha_cdc_change_cpe_clk(void *data,
 {
 	struct snd_soc_codec *codec = data;
 	struct tasha_priv *tasha;
-	u32 cpe_clk_khz, req_freq = 0;
+	u32 req_freq = 0;
 
 	if (!codec) {
 		pr_err("%s: Invalid codec handle\n",
@@ -13155,7 +13154,6 @@ static void tasha_cdc_change_cpe_clk(void *data,
 	}
 
 	tasha = snd_soc_codec_get_drvdata(codec);
-	cpe_clk_khz = tasha->current_cpe_clk_freq / 1000;
 
 	if (tasha_cdc_is_svs_enabled(tasha)) {
 		if ((clk_freq * 1000) <= CPE_FLL_CLK_75MHZ)
