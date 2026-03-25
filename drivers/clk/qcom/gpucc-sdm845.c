@@ -659,7 +659,7 @@ static void gpu_cc_gfx_sdm845_fixup_sdm670(void)
 		520000000;
 	gpu_cc_gx_gfx3d_clk_src.clkr.hw.init->rate_max[VDD_GX_HIGH] = 616000000;
 	gpu_cc_gx_gfx3d_clk_src.clkr.hw.init->rate_max[VDD_GX_HIGH_L1] = 616000000;
-	gpu_cc_gx_gfx3d_clk_src.clkr.hw.init->rate_max[VDD_GX_MAX] = 650000000;
+	gpu_cc_gx_gfx3d_clk_src.clkr.hw.init->rate_max[VDD_GX_MAX] = 635000000;
 }
 
 static int gpu_cc_gfx_sdm845_fixup(struct platform_device *pdev)
