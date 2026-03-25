@@ -53,7 +53,7 @@ static int vdd_gx_corner[] = {
 	RPMH_REGULATOR_LEVEL_NOM_L1,		/* VDD_GX_NOMINAL_L1 */
 	RPMH_REGULATOR_LEVEL_TURBO,		/* VDD_GX_HIGH */
 	RPMH_REGULATOR_LEVEL_TURBO_L1,		/* VDD_GX_HIGH_L1 */
-	421,					/* VDD_GX_MAX */
+	417,					/* VDD_GX_MAX */
 };
 
 static DEFINE_VDD_REGULATORS(vdd_cx, VDD_CX_NUM, 1, vdd_corner);
@@ -656,7 +656,7 @@ static void gpu_cc_gfx_sdm845_fixup_sdm670(void)
 		520000000;
 	gpu_cc_gx_gfx3d_clk_src.clkr.hw.init->rate_max[VDD_GX_HIGH] = 616000000;
 	gpu_cc_gx_gfx3d_clk_src.clkr.hw.init->rate_max[VDD_GX_HIGH_L1] = 616000000;
-	gpu_cc_gx_gfx3d_clk_src.clkr.hw.init->rate_max[VDD_GX_MAX] = 675000000;
+	gpu_cc_gx_gfx3d_clk_src.clkr.hw.init->rate_max[VDD_GX_MAX] = 616000000;
 }
 
 static int gpu_cc_gfx_sdm845_fixup(struct platform_device *pdev)
