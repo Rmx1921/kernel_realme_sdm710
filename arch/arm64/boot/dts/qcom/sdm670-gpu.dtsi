@@ -97,7 +97,7 @@
 		qcom,bus-control;
 		qcom,msm-bus,name = "grp3d";
 		qcom,bus-width = <32>;
-		qcom,msm-bus,num-cases = <12>;
+		qcom,msm-bus,num-cases = <13>;
 		qcom,msm-bus,num-paths = <1>;
 		qcom,msm-bus,vectors-KBps =
 				<26 512 0 0>,
@@ -111,7 +111,8 @@
 				<26 512 0 4068000>,    /*  8 bus=1017 */
 				<26 512 0 5412000>,    /*  9 bus=1353 */
 				<26 512 0 6220000>,    /* 10 bus=1555 */
-				<26 512 0 8363000>;    /* 11 bus=2092 */
+				<26 512 0 8363000>,    /* 11 bus=2092 */
+				<26 512 0 8532000>;    /* 12 bus=2133 */
 
 		/* GDSC regulator names */
 		regulator-names = "vddcx", "vdd";
@@ -216,10 +217,10 @@
 				/* TURBO_L1/MAX */
 				qcom,gpu-pwrlevel@0 {
 					reg = <0>;
-					qcom,gpu-freq = <675000000>;
-					qcom,bus-freq = <11>;
-					qcom,bus-min = <11>;
-					qcom,bus-max = <11>;
+					qcom,gpu-freq = <650000000>;
+					qcom,bus-freq = <12>;
+					qcom,bus-min = <10>;
+					qcom,bus-max = <12>;
 				};
 
 				/* TURBO */
