@@ -470,6 +470,11 @@ void kgsl_pwrctrl_pwrlevel_change(struct kgsl_device *device,
 			pwr->previous_pwrlevel,
 			pwr->pwrlevels[old_level].gpu_freq);
 
+	if (pwr->active_pwrlevel == 0) {
+		pr_info("KGSL: Transitioning to MAX frequency: %u Hz (Bus: %u)\n",
+			pwrlevel->gpu_freq, pwrlevel->bus_freq);
+	}
+
 	/*
 	 * Some targets do not support the bandwidth requirement of
 	 * GPU at TURBO, for such targets we need to set GPU-BIMC

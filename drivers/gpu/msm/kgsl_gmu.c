@@ -467,8 +467,13 @@ int gmu_dcvs_set(struct gmu_device *gmu,
 	if (ADRENO_QUIRK(adreno_dev, ADRENO_QUIRK_HFI_USE_REG))
 		ret = gpudev->rpmh_gpu_pwrctrl(adreno_dev,
 			GMU_DCVS_NOHFI, perf_idx, bw_idx);
-	else if (test_bit(GMU_HFI_ON, &gmu->flags))
+	else if (test_bit(GMU_HFI_ON, &gmu->flags)) {
+		if (perf_idx >= gmu->num_gpupwrlevels - 2) {
+			pr_info("GMU: Voting for MAX perf_idx=%u (gpu_pwrlevel=%u, freq=%u Hz), bw_idx=%u\n",
+				perf_idx, gpu_pwrlevel, gmu->gpu_freqs[gpu_pwrlevel], bw_idx);
+		}
 		ret = hfi_send_dcvs_vote(gmu, perf_idx, bw_idx, ACK_NONBLOCK);
+	}
 
 	if (ret) {
 		dev_err_ratelimited(&gmu->pdev->dev,
