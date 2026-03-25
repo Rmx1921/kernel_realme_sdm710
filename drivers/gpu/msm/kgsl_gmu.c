@@ -469,7 +469,7 @@ int gmu_dcvs_set(struct gmu_device *gmu,
 			GMU_DCVS_NOHFI, perf_idx, bw_idx);
 	else if (test_bit(GMU_HFI_ON, &gmu->flags)) {
 		if (perf_idx >= gmu->num_gpupwrlevels - 2) {
-			pr_info("GMU: Voting for MAX perf_idx=%u (gpu_pwrlevel=%u, freq=%u Hz), bw_idx=%u\n",
+			pr_err("GMU: Voting for MAX perf_idx=%u (gpu_pwrlevel=%u, freq=%u Hz), bw_idx=%u\n",
 				perf_idx, gpu_pwrlevel, gmu->gpu_freqs[gpu_pwrlevel], bw_idx);
 		}
 		ret = hfi_send_dcvs_vote(gmu, perf_idx, bw_idx, ACK_NONBLOCK);

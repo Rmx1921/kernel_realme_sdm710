@@ -465,15 +465,15 @@ void kgsl_pwrctrl_pwrlevel_change(struct kgsl_device *device,
 	kgsl_clk_set_rate(device, pwr->active_pwrlevel);
 	_isense_clk_set_rate(pwr, pwr->active_pwrlevel);
 
+	if (pwr->active_pwrlevel == 0) {
+		pr_err("KGSL: STARTING transition to MAX frequency: %u Hz (Bus: %u)\n",
+			pwrlevel->gpu_freq, pwrlevel->bus_freq);
+	}
+
 	trace_kgsl_pwrlevel(device,
 			pwr->active_pwrlevel, pwrlevel->gpu_freq,
 			pwr->previous_pwrlevel,
 			pwr->pwrlevels[old_level].gpu_freq);
-
-	if (pwr->active_pwrlevel == 0) {
-		pr_info("KGSL: Transitioning to MAX frequency: %u Hz (Bus: %u)\n",
-			pwrlevel->gpu_freq, pwrlevel->bus_freq);
-	}
 
 	/*
 	 * Some targets do not support the bandwidth requirement of
@@ -501,6 +501,10 @@ void kgsl_pwrctrl_pwrlevel_change(struct kgsl_device *device,
 
 	/* Change register settings if any AFTER pwrlevel change*/
 	kgsl_pwrctrl_pwrlevel_change_settings(device, 1);
+
+	if (pwr->active_pwrlevel == 0) {
+		pr_err("KGSL: COMPLETED transition to MAX frequency\n");
+	}
 
 	/* Timestamp the frequency change */
 	device->pwrscale.freq_change_time = ktime_to_ms(ktime_get());
