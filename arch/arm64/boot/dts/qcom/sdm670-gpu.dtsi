@@ -67,7 +67,7 @@
 		qcom,gpu-quirk-limit-uche-gbif-rw;
 		qcom,gpu-quirk-secvid-set-once;
 
-		qcom,idle-timeout = <80>; //msec
+		qcom,idle-timeout = <1000>; //msec
 		qcom,no-nap;
 
 		qcom,highest-bank-bit = <14>;
@@ -130,7 +130,7 @@
 		/* Enable context aware freq. scaling */
 		qcom,enable-ca-jump;
 		/* Context aware jump busy penalty in us */
-		qcom,ca-busy-penalty = <12000>;
+		qcom,ca-busy-penalty = <0>;
 		/* Context aware jump target power level */
 		qcom,ca-target-pwrlevel = <0>;
 
@@ -213,9 +213,18 @@
 				qcom,initial-pwrlevel = <0>;
 				qcom,ca-target-pwrlevel = <0>;
 
-				/* TURBO_L1 */
+				/* TURBO_L1_OC */
 				qcom,gpu-pwrlevel@0 {
 					reg = <0>;
+					qcom,gpu-freq = <710000000>;
+					qcom,bus-freq = <11>;
+					qcom,bus-min = <11>;
+					qcom,bus-max = <11>;
+				};
+
+				/* TURBO_L1 */
+				qcom,gpu-pwrlevel@1 {
+					reg = <1>;
 					qcom,gpu-freq = <616000000>;
 					qcom,bus-freq = <11>;
 					qcom,bus-min = <11>;
@@ -223,8 +232,8 @@
 				};
 
 				/* TURBO */
-				qcom,gpu-pwrlevel@1 {
-					reg = <1>;
+				qcom,gpu-pwrlevel@2 {
+					reg = <2>;
 					qcom,gpu-freq = <565000000>;
 					qcom,bus-freq = <11>;
 					qcom,bus-min = <9>;
@@ -232,8 +241,8 @@
 				};
 
 				/* NOM_L1 */
-				qcom,gpu-pwrlevel@2 {
-					reg = <2>;
+				qcom,gpu-pwrlevel@3 {
+					reg = <3>;
 					qcom,gpu-freq = <520000000>;
 					qcom,bus-freq = <10>;
 					qcom,bus-min = <8>;
@@ -241,8 +250,8 @@
 				};
 
 				/* NOM */
-				qcom,gpu-pwrlevel@3 {
-					reg = <3>;
+				qcom,gpu-pwrlevel@4 {
+					reg = <4>;
 					qcom,gpu-freq = <504000000>;
 					qcom,bus-freq = <11>;
 					qcom,bus-min = <9>;
@@ -250,8 +259,8 @@
 				};
 
 				/* SVS_L1 */
-				qcom,gpu-pwrlevel@4 {
-					reg = <4>;
+				qcom,gpu-pwrlevel@5 {
+					reg = <5>;
 					qcom,gpu-freq = <430000000>;
 					qcom,bus-freq = <8>;
 					qcom,bus-min = <7>;
@@ -259,8 +268,8 @@
 				};
 
 				/* SVS */
-				qcom,gpu-pwrlevel@5 {
-					reg = <5>;
+				qcom,gpu-pwrlevel@6 {
+					reg = <6>;
 					qcom,gpu-freq = <355000000>;
 					qcom,bus-freq = <7>;
 					qcom,bus-min = <5>;
@@ -268,8 +277,8 @@
 				};
 
 				/* LOW SVS */
-				qcom,gpu-pwrlevel@6 {
-					reg = <6>;
+				qcom,gpu-pwrlevel@7 {
+					reg = <7>;
 					qcom,gpu-freq = <267000000>;
 					qcom,bus-freq = <6>;
 					qcom,bus-min = <4>;
@@ -277,8 +286,8 @@
 				};
 
 				/* MIN SVS */
-				qcom,gpu-pwrlevel@7 {
-					reg = <7>;
+				qcom,gpu-pwrlevel@8 {
+					reg = <8>;
 					qcom,gpu-freq = <170000000>;
 					qcom,bus-freq = <4>;
 					qcom,bus-min = <3>;
@@ -286,8 +295,8 @@
 				};
 
 				/* XO */
-				qcom,gpu-pwrlevel@8 {
-					reg = <8>;
+				qcom,gpu-pwrlevel@9 {
+					reg = <9>;
 					qcom,gpu-freq = <0>;
 					qcom,bus-freq = <0>;
 					qcom,bus-min = <0>;
@@ -381,6 +390,11 @@
 			qcom,gmu-pwrlevel@1 {
 				reg = <1>;
 				qcom,gmu-freq = <200000000>;
+			};
+
+			qcom,gmu-pwrlevel@2 {
+				reg = <2>;
+				qcom,gmu-freq = <400000000>;
 			};
 		};
 
