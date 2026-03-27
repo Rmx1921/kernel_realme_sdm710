@@ -210,7 +210,7 @@
 
 				qcom,speed-bin = <128>;
 
-				qcom,initial-pwrlevel = <0>;
+				qcom,initial-pwrlevel = <7>;
 				qcom,ca-target-pwrlevel = <0>;
 
 				/* TURBO_L1_OC */
