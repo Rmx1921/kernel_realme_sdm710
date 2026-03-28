@@ -497,6 +497,12 @@ static ssize_t gpu_voltage_table_store(struct device *dev,
 	mutex_lock(&device->mutex);
 	gmu->rpmh_votes.gx_votes[pwrlevel].vlvl = vlvl;
 
+	pr_info("KGSL: Updated Level %u voltage to VLVL %u\n", pwrlevel, vlvl);
+
+	/* Update GMU internal table */
+	if (test_bit(GMU_HFI_ON, &gmu->flags))
+		hfi_send_perftbl(gmu);
+
 	/* Update current voltage if the GPU is active at this level */
 	if (device->state == KGSL_STATE_ACTIVE &&
 			device->pwrctrl.active_pwrlevel == pwrlevel) {

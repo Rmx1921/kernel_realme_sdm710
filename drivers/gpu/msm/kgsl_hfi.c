@@ -356,7 +356,7 @@ int hfi_send_lmconfig(struct gmu_device *gmu)
 	return rc;
 }
 
-static int hfi_send_perftbl(struct gmu_device *gmu)
+int hfi_send_perftbl(struct gmu_device *gmu)
 {
 	struct hfi_dcvstable_cmd dcvstbl = {
 		.hdr = {
