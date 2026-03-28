@@ -473,8 +473,9 @@ static ssize_t gpu_voltage_table_show(struct device *dev,
 		return snprintf(buf, PAGE_SIZE, "GMU disabled\n");
 
 	for (i = 0; i < gmu->num_gpupwrlevels; i++) {
-		len += snprintf(buf + len, PAGE_SIZE - len, "Level %d: %u (%u Hz)\n",
-				i, gmu->rpmh_votes.gx_votes[i].vlvl, gmu->gpu_freqs[i]);
+		len += snprintf(buf + len, PAGE_SIZE - len, "Level %d: %u (Hz: %u, pri: %u, sec: %u)\n",
+				i, gmu->rpmh_votes.gx_votes[i].vlvl, gmu->gpu_freqs[i],
+				gmu->rpmh_votes.gx_votes[i].pri_idx, gmu->rpmh_votes.gx_votes[i].sec_idx);
 	}
 
 	return len;
@@ -486,9 +487,9 @@ static ssize_t gpu_voltage_table_store(struct device *dev,
 	struct adreno_device *adreno_dev = _get_adreno_dev(dev);
 	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
 	struct gmu_device *gmu = &device->gmu;
-	unsigned int pwrlevel, vlvl;
+	unsigned int pwrlevel, vlvl, pri, sec;
 
-	if (sscanf(buf, "%u %u", &pwrlevel, &vlvl) != 2)
+	if (sscanf(buf, "%u %u %u %u", &pwrlevel, &vlvl, &pri, &sec) != 4)
 		return -EINVAL;
 
 	if (pwrlevel >= gmu->num_gpupwrlevels)
@@ -496,8 +497,10 @@ static ssize_t gpu_voltage_table_store(struct device *dev,
 
 	mutex_lock(&device->mutex);
 	gmu->rpmh_votes.gx_votes[pwrlevel].vlvl = vlvl;
+	gmu->rpmh_votes.gx_votes[pwrlevel].pri_idx = pri;
+	gmu->rpmh_votes.gx_votes[pwrlevel].sec_idx = sec;
 
-	pr_info("KGSL: Updated Level %u voltage to VLVL %u\n", pwrlevel, vlvl);
+	pr_info("KGSL: Updated Level %u: VLVL %u, pri %u, sec %u\n", pwrlevel, vlvl, pri, sec);
 
 	/* Update GMU internal table */
 	if (test_bit(GMU_HFI_ON, &gmu->flags))
@@ -505,8 +508,8 @@ static ssize_t gpu_voltage_table_store(struct device *dev,
 
 	/* Update current voltage if the GPU is active at this level */
 	if (device->state == KGSL_STATE_ACTIVE &&
-			device->pwrctrl.active_pwrlevel == pwrlevel) {
-		gmu_dcvs_set(gmu, pwrlevel, INVALID_DCVS_IDX);
+			device->pwrctrl.active_pwrlevel == (gmu->num_gpupwrlevels - pwrlevel - 1)) {
+		gmu_dcvs_set(gmu, device->pwrctrl.active_pwrlevel, INVALID_DCVS_IDX);
 	}
 	mutex_unlock(&device->mutex);
 
