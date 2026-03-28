@@ -528,7 +528,7 @@ static const struct device_attribute *_attr_list[] = {
 	&adreno_attr_ifpc.attr,
 	&adreno_attr_ifpc_count.attr,
 	&adreno_attr_preempt_count.attr,
-	&dev_attr_gpu_voltage_table.attr,
+	&dev_attr_gpu_voltage_table,
 	NULL,
 };
 
