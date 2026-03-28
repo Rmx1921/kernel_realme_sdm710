@@ -15,6 +15,7 @@
 
 #include "kgsl_device.h"
 #include "adreno.h"
+#include "kgsl_gmu.h"
 
 struct adreno_sysfs_attribute {
 	struct device_attribute attr;
@@ -459,6 +460,55 @@ static ADRENO_SYSFS_RO_U32(ifpc_count);
 
 
 
+static ssize_t gpu_voltage_table_show(struct device *dev,
+		struct device_attribute *attr, char *buf)
+{
+	struct adreno_device *adreno_dev = _get_adreno_dev(dev);
+	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
+	struct gmu_device *gmu = &device->gmu;
+	int i;
+	ssize_t len = 0;
+
+	if (!kgsl_gmu_isenabled(device))
+		return snprintf(buf, PAGE_SIZE, "GMU disabled\n");
+
+	for (i = 0; i < gmu->num_gpupwrlevels; i++) {
+		len += snprintf(buf + len, PAGE_SIZE - len, "Level %d: %u (%u Hz)\n",
+				i, gmu->rpmh_votes.gx_votes[i].vlvl, gmu->gpu_freqs[i]);
+	}
+
+	return len;
+}
+
+static ssize_t gpu_voltage_table_store(struct device *dev,
+		struct device_attribute *attr, const char *buf, size_t count)
+{
+	struct adreno_device *adreno_dev = _get_adreno_dev(dev);
+	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
+	struct gmu_device *gmu = &device->gmu;
+	unsigned int pwrlevel, vlvl;
+
+	if (sscanf(buf, "%u %u", &pwrlevel, &vlvl) != 2)
+		return -EINVAL;
+
+	if (pwrlevel >= gmu->num_gpupwrlevels)
+		return -EINVAL;
+
+	mutex_lock(&device->mutex);
+	gmu->rpmh_votes.gx_votes[pwrlevel].vlvl = vlvl;
+
+	/* Update current voltage if the GPU is active at this level */
+	if (device->state == KGSL_STATE_ACTIVE &&
+			device->pwrctrl.active_pwrlevel == pwrlevel) {
+		gmu_dcvs_set(gmu, pwrlevel, INVALID_DCVS_IDX);
+	}
+	mutex_unlock(&device->mutex);
+
+	return count;
+}
+
+static DEVICE_ATTR_RW(gpu_voltage_table);
+
 static const struct device_attribute *_attr_list[] = {
 	&adreno_attr_ft_policy.attr,
 	&adreno_attr_ft_pagefault_policy.attr,
@@ -478,6 +528,7 @@ static const struct device_attribute *_attr_list[] = {
 	&adreno_attr_ifpc.attr,
 	&adreno_attr_ifpc_count.attr,
 	&adreno_attr_preempt_count.attr,
+	&dev_attr_gpu_voltage_table.attr,
 	NULL,
 };
 
