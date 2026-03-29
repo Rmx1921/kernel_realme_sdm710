@@ -215,7 +215,7 @@
 				qcom,speed-bin = <128>;
 
 				qcom,initial-pwrlevel = <7>;
-				qcom,ca-target-pwrlevel = <0>;
+				qcom,ca-target-pwrlevel = <1>;
 
 				/* STABILIZED MAX (650 MHz) */
 				qcom,gpu-pwrlevel@0 {
