@@ -222,9 +222,9 @@
 					reg = <0>;
 					qcom,gpu-freq = <650000000>;
 					qcom,vlvl = <480>;
-					qcom,bus-freq = <12>;
-					qcom,bus-min = <12>;
-					qcom,bus-max = <12>;
+					qcom,bus-freq = <13>;
+					qcom,bus-min = <13>;
+					qcom,bus-max = <13>;
 				};
 
 				/* NOMINAL MAX (616 MHz) */
