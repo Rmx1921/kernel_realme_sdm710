@@ -56,6 +56,7 @@ static int vdd_gx_corner[] = {
 	417,					/* VDD_GX_MAX (9) */
 	418,					/* VDD_GX_OVERVOLT_1 (10) */
 	448,					/* VDD_GX_TURBO (11) */
+	480,					/* VDD_GX_SUPER_TURBO (12) */
 };
 
 static DEFINE_VDD_REGULATORS(vdd_cx, VDD_CX_NUM, 1, vdd_corner);
