@@ -217,21 +217,21 @@
 				qcom,initial-pwrlevel = <8>;
 				qcom,ca-target-pwrlevel = <0>;
 
-				/* OVERCLOCK (650 MHz) */
+				/* STABILIZED MAX (616 MHz) */
 				qcom,gpu-pwrlevel@0 {
 					reg = <0>;
-					qcom,gpu-freq = <650000000>;
+					qcom,gpu-freq = <616000000>;
 					qcom,vlvl = <448>;
 					qcom,bus-freq = <13>;
 					qcom,bus-min = <13>;
 					qcom,bus-max = <13>;
 				};
 
-				/* STABILIZED MAX (616 MHz) */
+				/* TURBO (565 MHz) */
 				qcom,gpu-pwrlevel@1 {
 					reg = <1>;
-					qcom,gpu-freq = <616000000>;
-					qcom,vlvl = <418>;
+					qcom,gpu-freq = <565000000>;
+					qcom,vlvl = <384>;
 					qcom,bus-freq = <13>;
 					qcom,bus-min = <13>;
 					qcom,bus-max = <13>;

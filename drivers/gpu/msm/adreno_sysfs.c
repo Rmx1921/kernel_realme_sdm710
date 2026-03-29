@@ -516,7 +516,56 @@ static ssize_t gpu_voltage_table_store(struct device *dev,
 	return count;
 }
 
+static ssize_t gpu_clock_table_show(struct device *dev,
+		struct device_attribute *attr, char *buf)
+{
+	struct adreno_device *adreno_dev = _get_adreno_dev(dev);
+	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
+	struct gmu_device *gmu = &device->gmu;
+	int i;
+	ssize_t len = 0;
+
+	if (!kgsl_gmu_isenabled(device))
+		return snprintf(buf, PAGE_SIZE, "GMU disabled\n");
+
+	for (i = 0; i < gmu->num_gpupwrlevels; i++) {
+		len += snprintf(buf + len, PAGE_SIZE - len, "Level %d: %u\n",
+				i, gmu->gpu_freqs[i]);
+	}
+
+	return len;
+}
+
+static ssize_t gpu_clock_table_store(struct device *dev,
+		struct device_attribute *attr, const char *buf, size_t count)
+{
+	struct adreno_device *adreno_dev = _get_adreno_dev(dev);
+	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
+	struct gmu_device *gmu = &device->gmu;
+	unsigned int pwrlevel, freq;
+
+	if (sscanf(buf, "%u %u", &pwrlevel, &freq) != 2)
+		return -EINVAL;
+
+	if (pwrlevel >= gmu->num_gpupwrlevels)
+		return -EINVAL;
+
+	mutex_lock(&device->mutex);
+	gmu->gpu_freqs[pwrlevel] = freq;
+
+	pr_info("KGSL: Updated Level %u: Frequency %u Hz\n", pwrlevel, freq);
+
+	/* Update GMU internal table */
+	if (test_bit(GMU_HFI_ON, &gmu->flags))
+		hfi_send_perftbl(gmu);
+
+	mutex_unlock(&device->mutex);
+
+	return count;
+}
+
 static DEVICE_ATTR_RW(gpu_voltage_table);
+static DEVICE_ATTR_RW(gpu_clock_table);
 
 static const struct device_attribute *_attr_list[] = {
 	&adreno_attr_ft_policy.attr,
@@ -524,6 +573,10 @@ static const struct device_attribute *_attr_list[] = {
 	&adreno_attr_ft_long_ib_detect.attr,
 	&adreno_attr_ft_hang_intr_status.attr,
 	&dev_attr_wake_nice.attr,
+	&adreno_attr_sptp_pc.attr,
+	&adreno_attr_lm.attr,
+	&adreno_attr_preemption.attr,
+	&adreno_attr_hwcg.attr,
 	&adreno_attr_sptp_pc.attr,
 	&adreno_attr_lm.attr,
 	&adreno_attr_preemption.attr,
@@ -538,6 +591,7 @@ static const struct device_attribute *_attr_list[] = {
 	&adreno_attr_ifpc_count.attr,
 	&adreno_attr_preempt_count.attr,
 	&dev_attr_gpu_voltage_table,
+	&dev_attr_gpu_clock_table,
 	NULL,
 };
 
