@@ -128,8 +128,8 @@
 		cache-slices = <&llcc 12>, <&llcc 11>;
 
 		/* CPU latency parameter */
-		qcom,pm-qos-active-latency = <16>;
-		qcom,pm-qos-wakeup-latency = <16>;
+		qcom,pm-qos-active-latency = <8>;
+		qcom,pm-qos-wakeup-latency = <8>;
 
 		/* Enable context aware freq. scaling */
 		qcom,enable-ca-jump;
@@ -214,14 +214,14 @@
 
 				qcom,speed-bin = <128>;
 
-				qcom,initial-pwrlevel = <8>;
+				qcom,initial-pwrlevel = <7>;
 				qcom,ca-target-pwrlevel = <0>;
 
-				/* STABILIZED MAX (616 MHz) */
+				/* STABILIZED MAX (650 MHz) */
 				qcom,gpu-pwrlevel@0 {
 					reg = <0>;
-					qcom,gpu-freq = <616000000>;
-					qcom,vlvl = <448>;
+					qcom,gpu-freq = <650000000>;
+					qcom,vlvl = <480>;
 					qcom,bus-freq = <13>;
 					qcom,bus-min = <13>;
 					qcom,bus-max = <13>;
