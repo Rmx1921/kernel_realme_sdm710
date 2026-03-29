@@ -296,6 +296,7 @@ static const struct freq_tbl ftbl_gpu_cc_gx_gfx3d_clk_src_sdm670[] = {
 	F(520000000, P_CRC_DIV,  1, 0, 0),
 	F(565000000, P_CRC_DIV,  1, 0, 0),
 	F(616000000, P_CRC_DIV,  1, 0, 0),
+	F(635000000, P_CRC_DIV,  1, 0, 0),
 	F(650000000, P_CRC_DIV,  1, 0, 0),
 	F(710000000, P_CRC_DIV,  1, 0, 0),
 	F(750000000, P_CRC_DIV,  1, 0, 0),
@@ -323,7 +324,7 @@ static struct clk_rcg2 gpu_cc_gx_gfx3d_clk_src = {
 			HIGH, 565000000,
 			MAX, 616000000,
 			TURBO, 616000000,
-			SUPER_TURBO, 650000000),
+			SUPER_TURBO, 635000000),
 	},
 };
 
