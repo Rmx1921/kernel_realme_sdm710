@@ -56,7 +56,8 @@ static int vdd_gx_corner[] = {
 	417,					/* VDD_GX_MAX (9) */
 	418,					/* VDD_GX_OVERVOLT_1 (10) */
 	448,					/* VDD_GX_TURBO (11) */
-	480,					/* VDD_GX_SUPER_TURBO (12) */
+	512,					/* VDD_GX_SUPER_TURBO (12) */
+	512,					/* VDD_GX_EXTREME (13) */
 };
 
 static DEFINE_VDD_REGULATORS(vdd_cx, VDD_CX_NUM, 1, vdd_corner);
@@ -324,7 +325,7 @@ static struct clk_rcg2 gpu_cc_gx_gfx3d_clk_src = {
 			HIGH, 565000000,
 			MAX, 616000000,
 			TURBO, 616000000,
-			SUPER_TURBO, 635000000),
+			SUPER_TURBO, 650000000),
 	},
 };
 

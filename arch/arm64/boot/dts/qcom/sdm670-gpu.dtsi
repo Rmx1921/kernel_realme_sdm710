@@ -217,11 +217,11 @@
 				qcom,initial-pwrlevel = <7>;
 				qcom,ca-target-pwrlevel = <1>;
 
-				/* STABILIZED MAX (635 MHz) */
+				/* EXTREME MAX (650 MHz) */
 				qcom,gpu-pwrlevel@0 {
 					reg = <0>;
-					qcom,gpu-freq = <635000000>;
-					qcom,vlvl = <480>;
+					qcom,gpu-freq = <650000000>;
+					qcom,vlvl = <512>;
 					qcom,bus-freq = <13>;
 					qcom,bus-min = <13>;
 					qcom,bus-max = <13>;
