@@ -8785,8 +8785,7 @@ static int smb2_batt_get_prop(struct power_supply *psy,
 		rc = smblib_get_prop_input_suspend(chg, val);
 		break;
 	case POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED:
-		val->intval = !get_client_vote(chg->chg_disable_votable,
-					      USER_VOTER);
+		rc = oppo_battery_get_property(psy, POWER_SUPPLY_PROP_MMI_CHARGING_ENABLE, val);
 		break;
 	case POWER_SUPPLY_PROP_CHARGE_TYPE:
 		rc = smblib_get_prop_batt_charge_type(chg, val);
@@ -8944,7 +8943,7 @@ static int smb2_batt_set_prop(struct power_supply *psy,
 		rc = smblib_set_prop_input_suspend(chg, val);
 		break;
 	case POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED:
-		vote(chg->chg_disable_votable, USER_VOTER, !val->intval, 0);
+		rc = oppo_battery_set_property(psy, POWER_SUPPLY_PROP_MMI_CHARGING_ENABLE, val);
 		break;
 	case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT:
 		rc = smblib_set_prop_system_temp_level(chg, val);
