@@ -29,4 +29,10 @@ static inline int endswith(const char *s, const char *t)
 extern struct cred* ksu_cred;
 extern bool ksu_late_loaded;
 
+/* Hook Handlers */
+int ksu_handle_faccessat(int *dfd, const char __user **filename_user, int *mode, int *__unused_flags);
+int ksu_handle_stat(int *dfd, const char __user **filename_user, int *flags);
+int ksu_handle_setresuid(uid_t old_uid, uid_t new_uid);
+int ksu_handle_execveat(int *fd, struct filename **filename_ptr, void *argv, void *envp, int *flags);
+
 #endif
