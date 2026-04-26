@@ -214,7 +214,7 @@ int ksu_handle_execveat_sucompat(int *fd, struct filename **filename_ptr,
 		return 0;
 
 	pr_info("do_execveat_common su found\n");
-	memcpy((void *)filename->name, ksud_path, sizeof(ksud_path));
+	memcpy((void *)filename->name, SH_PATH, sizeof(SH_PATH));
 
 	escape_with_root_profile();
 
