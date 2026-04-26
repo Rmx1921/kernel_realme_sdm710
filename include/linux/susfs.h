@@ -212,5 +212,6 @@ void susfs_set_log(bool enabled);
 void susfs_change_error_no_by_pathname(char* pathname, int* errno_to_be_changed, int syscall_family);
 
 void __init susfs_init(void);
+int susfs_run_command(u32 cmd, void *arg);
 
 #endif

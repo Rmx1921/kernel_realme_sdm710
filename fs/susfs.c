@@ -1423,5 +1423,36 @@ void __init susfs_init(void) {
 	susfs_my_uname_init();
 }
 
+int susfs_run_command(u32 cmd, void *arg)
+{
+	switch (cmd) {
+	case CMD_SUSFS_ADD_SUS_PATH:
+		return susfs_add_sus_path(arg);
+	case CMD_SUSFS_ADD_SUS_MOUNT:
+		return susfs_add_sus_mount(arg);
+	case CMD_SUSFS_ADD_SUS_KSTAT:
+		return susfs_add_sus_kstat(arg);
+	case CMD_SUSFS_UPDATE_SUS_KSTAT:
+		return susfs_update_sus_kstat(arg);
+	case CMD_SUSFS_ADD_SUS_MAPS:
+		return susfs_add_sus_maps(arg);
+	case CMD_SUSFS_UPDATE_SUS_MAPS:
+		return susfs_update_sus_maps(arg);
+	case CMD_SUSFS_ADD_SUS_PROC_FD_LINK:
+		return susfs_add_sus_proc_fd_link(arg);
+	case CMD_SUSFS_ADD_SUS_MEMFD:
+		return susfs_add_sus_memfd(arg);
+	case CMD_SUSFS_ADD_TRY_UMOUNT:
+		return susfs_add_try_umount(arg);
+	case CMD_SUSFS_SET_UNAME:
+		return susfs_set_uname(arg);
+	case CMD_SUSFS_ENABLE_LOG:
+		susfs_set_log(*(bool *)arg);
+		return 0;
+	default:
+		return -ENOTTY;
+	}
+}
+
 /* No module exit is needed becuase it should never be a loadable kernel module */
 //void __init susfs_exit(void)

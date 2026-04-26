@@ -100,8 +100,9 @@ int __init kernelsu_init(void)
 	ksu_feature_init();
 
 	ksu_supercalls_init();
-
+#ifdef CONFIG_KSU_SUSFS
 	susfs_init();
+#endif
 
 	
 
