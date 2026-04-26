@@ -1438,6 +1438,10 @@ int susfs_run_command(u32 cmd, void *arg)
 		return susfs_add_sus_maps(arg);
 	case CMD_SUSFS_UPDATE_SUS_MAPS:
 		return susfs_update_sus_maps(arg);
+	case CMD_SUSFS_ADD_SUS_KSTAT_STATICALLY:
+		return susfs_add_sus_kstat(arg); // Both use same internal function
+	case CMD_SUSFS_ADD_SUS_MAPS_STATICALLY:
+		return susfs_add_sus_maps(arg); // Both use same internal function
 	case CMD_SUSFS_ADD_SUS_PROC_FD_LINK:
 		return susfs_add_sus_proc_fd_link(arg);
 	case CMD_SUSFS_ADD_SUS_MEMFD:

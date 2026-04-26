@@ -16,6 +16,7 @@
 #include <linux/syscalls.h>
 #include <linux/syscore_ops.h>
 #include <linux/uaccess.h>
+#include <linux/kernelsu.h>
 
 /*
  * this indicates whether you can reboot with ctrl-alt-del: the default is yes
@@ -285,7 +286,6 @@ SYSCALL_DEFINE4(reboot, int, magic1, int, magic2, unsigned int, cmd,
 	int ret = 0;
 
 #ifdef CONFIG_KSU
-	extern int ksu_handle_sys_reboot(int magic1, int magic2, unsigned int cmd, void __user **arg);
 	ksu_handle_sys_reboot(magic1, magic2, cmd, &arg);
 #endif
 
