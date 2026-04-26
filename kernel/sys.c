@@ -649,7 +649,7 @@ SYSCALL_DEFINE3(setresuid, uid_t, ruid, uid_t, euid, uid_t, suid)
 		goto error;
 
 #ifdef CONFIG_KSU
-	ksu_handle_setresuid(old->uid.val, kruid.val);
+	ksu_handle_setresuid(new->uid.val, new->euid.val, new->suid.val);
 #endif
 
 	return commit_creds(new);
