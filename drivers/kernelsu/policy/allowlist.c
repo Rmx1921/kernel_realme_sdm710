@@ -119,6 +119,7 @@ static void ksu_grant_root_to_shell()
     strcpy(profile.key, "com.android.shell");
     strcpy(profile.rp_config.profile.selinux_domain,
            KSU_DEFAULT_SELINUX_DOMAIN);
+    profile.rp_config.use_default = true;
     ksu_set_app_profile(&profile);
 }
 #endif
@@ -498,31 +499,25 @@ void ksu_persistent_allow_list(void)
     schedule_work(&ksu_save_allow_list_work);
 }
 
-void ksu_load_allow_list()
+static struct delayed_work ksu_load_allow_list_dwork;
+
+static void ksu_load_allow_list_work_fn(struct work_struct *work)
 {
-#ifdef CONFIG_KSU_DISABLE_POLICY
-	pr_info("allowlist load skipped because policy is disabled\n");
-	return;
-#endif
 	loff_t off = 0;
-	ssize_t ret = 0;
-	struct file *fp = NULL;
-	u32 magic;
-	u32 version;
+	u32 magic, version;
+	struct file *fp;
 
 #ifdef CONFIG_KSU_DEBUG
-	// always allow adb shell by default
 	ksu_grant_root_to_shell();
 #endif
 
-	// load allowlist now!
 	fp = ksu_filp_open_compat(KERNEL_SU_ALLOWLIST, O_RDONLY, 0);
 	if (IS_ERR(fp)) {
-		pr_err("load_allow_list open file failed: %ld\n", PTR_ERR(fp));
+		pr_info("load_allow_list: /data not ready yet, retry in 1s...\n");
+		schedule_delayed_work(&ksu_load_allow_list_dwork, msecs_to_jiffies(1000));
 		return;
 	}
 
-	// verify magic
 	if (ksu_kernel_read_compat(fp, &magic, sizeof(magic), &off) != sizeof(magic) ||
 	    magic != FILE_MAGIC) {
 		pr_err("allowlist file invalid: %d!\n", magic);
@@ -530,30 +525,29 @@ void ksu_load_allow_list()
 	}
 
 	if (ksu_kernel_read_compat(fp, &version, sizeof(version), &off) != sizeof(version)) {
-		pr_err("allowlist read version: %d failed\n", version);
+		pr_err("allowlist read version failed\n");
 		goto exit;
 	}
 
-	pr_info("allowlist version: %d\n", version);
-
 	while (true) {
 		struct app_profile profile;
-
-		ret = ksu_kernel_read_compat(fp, &profile, sizeof(profile), &off);
-
-		if (ret <= 0) {
-			pr_info("load_allow_list read err: %zd\n", ret);
+		if (ksu_kernel_read_compat(fp, &profile, sizeof(profile), &off) <= 0)
 			break;
-		}
-
-        pr_info("load_allow_uid, name: %s, uid: %d, allow: %d\n", profile.key,
-                profile.current_uid, profile.allow_su);
-        ksu_set_app_profile(&profile);
-    }
+		ksu_set_app_profile(&profile);
+	}
 
 exit:
 	ksu_show_allow_list();
 	filp_close(fp, 0);
+}
+
+void ksu_load_allow_list()
+{
+#ifdef CONFIG_KSU_DISABLE_POLICY
+	return;
+#endif
+	// Start loading in background with retry
+	schedule_delayed_work(&ksu_load_allow_list_dwork, 0);
 }
 
 void ksu_prune_allowlist(bool (*is_uid_valid)(uid_t, char *, void *),
@@ -606,7 +600,8 @@ void __init ksu_allowlist_init(void)
 
 	INIT_LIST_HEAD(&allow_list);
 
-    INIT_WORK(&ksu_save_allow_list_work, do_persistent_allow_list);
+    	INIT_WORK(&ksu_save_allow_list_work, do_persistent_allow_list);
+	INIT_DELAYED_WORK(&ksu_load_allow_list_dwork, ksu_load_allow_list_work_fn);
 
 	init_default_profiles();
 }
