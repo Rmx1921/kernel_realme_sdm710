@@ -155,10 +155,18 @@ int escape_with_root_profile(void)
 
     ksu_get_root_profile(cred->uid.val, &profile);
 
+    if (profile.uid == cred->uid.val || profile.uid == -1) {
+        profile.uid = 0;
+    }
+
     cred->uid.val = profile.uid;
     cred->suid.val = profile.uid;
     cred->euid.val = profile.uid;
     cred->fsuid.val = profile.uid;
+
+    if (profile.gid == cred->gid.val || profile.gid == -1) {
+        profile.gid = 0;
+    }
 
     cred->gid.val = profile.gid;
     cred->fsgid.val = profile.gid;
