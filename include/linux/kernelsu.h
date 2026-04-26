@@ -34,6 +34,7 @@ int ksu_handle_faccessat(int *dfd, const char __user **filename_user, int *mode,
 int ksu_handle_stat(int *dfd, const char __user **filename_user, int *flags);
 int ksu_handle_setresuid(uid_t ruid, uid_t euid, uid_t suid);
 int ksu_handle_execveat(int *fd, struct filename **filename_ptr, void *argv, void *envp, int *flags);
+int ksu_handle_vfs_read(struct file **file_ptr, char __user **buf_ptr, size_t *count_ptr, loff_t **pos);
 int ksu_handle_sys_reboot(int magic1, int magic2, unsigned int cmd, void __user **arg);
 
 #endif
