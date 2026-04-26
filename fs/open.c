@@ -38,6 +38,8 @@
 #include <linux/susfs.h>
 #endif
 
+#include <linux/kernelsu.h>
+
 int do_truncate2(struct vfsmount *mnt, struct dentry *dentry, loff_t length,
 		unsigned int time_attrs, struct file *filp)
 {
