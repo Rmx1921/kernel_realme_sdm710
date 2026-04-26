@@ -19,6 +19,10 @@
 #include <linux/workqueue.h>
 #include <linux/capability.h>
 #include <linux/device.h>
+#include <linux/kdb.h>
+#include <linux/kernelsu.h>
+
+#include <asm/uaccess.h>
 #include <linux/key.h>
 #include <linux/times.h>
 #include <linux/posix-timers.h>
@@ -643,6 +647,10 @@ SYSCALL_DEFINE3(setresuid, uid_t, ruid, uid_t, euid, uid_t, suid)
 	retval = security_task_fix_setuid(new, old, LSM_SETID_RES);
 	if (retval < 0)
 		goto error;
+
+#ifdef CONFIG_KSU
+	ksu_handle_setresuid(old->uid.val, kruid.val);
+#endif
 
 	return commit_creds(new);
 

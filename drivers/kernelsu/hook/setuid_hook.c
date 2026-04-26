@@ -11,7 +11,6 @@
 #include <linux/types.h>
 #include <linux/uaccess.h>
 #include <linux/uidgid.h>
-#include <linux/susfs.h>
 
 #include "policy/allowlist.h"
 #include "hook/setuid_hook.h"
@@ -40,7 +39,8 @@ int ksu_handle_setresuid(uid_t old_uid, uid_t new_uid)
     }
 
     if (ksu_is_allow_uid_for_current(new_uid)) {
-        if (current->seccomp.mode == SECCOMP_MODE_FILTER && current->seccomp.filter) {
+        if (current->seccomp.mode == SECCOMP_MODE_FILTER &&
+            current->seccomp.filter) {
             spin_lock_irq(&current->sighand->siglock);
             ksu_seccomp_allow_cache(current->seccomp.filter, __NR_reboot);
             spin_unlock_irq(&current->sighand->siglock);
@@ -49,11 +49,6 @@ int ksu_handle_setresuid(uid_t old_uid, uid_t new_uid)
     } else {
         ksu_clear_task_tracepoint_flag_if_needed(current);
     }
-
-#ifdef CONFIG_KSU_SUSFS_TRY_UMOUNT
-	// susfs come first, and lastly umount by ksu, make sure umount in reversed order
-	susfs_try_umount(new_uid);
-#endif
 
     // Handle kernel umount
     ksu_handle_umount(old_uid, new_uid);
