@@ -2,15 +2,16 @@
 #include "security.h"
 #include <linux/uaccess.h>
 #include <linux/types.h>
+#include <linux/sched.h>
 #include <linux/version.h>
 #include <linux/lockdep.h>
 #include <linux/slab.h>
 #include <linux/string.h>
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 12, 0)
 #include <linux/sched/types.h>
+#include <uapi/linux/sched/types.h>
 #endif
 #include <linux/stop_machine.h>
-#include <uapi/linux/sched/types.h>
 
 #include "uapi/selinux.h"
 #include "klog.h" // IWYU pragma: keep
