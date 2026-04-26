@@ -140,15 +140,15 @@ struct ksu_nuke_ext4_sysfs_cmd {
     __aligned_u64 arg; /* Input: mnt pointer */
 };
 
+struct ksu_susfs_cmd {
+    __u32 cmd;
+    __aligned_u64 arg;
+};
+
 struct ksu_add_try_umount_cmd {
     __aligned_u64 arg; /* char ptr, this is the mountpoint */
     __u32 flags; /* this is the flag we use for it */
     __u8 mode; /* denotes what to do with it 0:wipe_list 1:add_to_list 2:delete_entry */
-};
-
-struct ksu_susfs_cmd {
-    __u32 cmd;
-    __aligned_u64 arg;
 };
 
 static const __u8 KSU_UMOUNT_WIPE = 0; /* ignore everything and wipe list */
