@@ -51,7 +51,6 @@
 #include <linux/audit.h>
 #include <linux/tracehook.h>
 #include <linux/kmod.h>
-#include <linux/klog.h>
 #include <linux/kernelsu.h>
 #include <linux/susfs.h>
 #include <linux/fsnotify.h>
