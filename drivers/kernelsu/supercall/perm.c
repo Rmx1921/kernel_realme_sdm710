@@ -17,7 +17,7 @@ bool only_root(void)
 
 bool manager_or_root(void)
 {
-	return current_uid().val == 0 || is_manager();
+	return current_uid().val == 0 || allowed_for_su();
 }
 
 bool always_allow(void)
