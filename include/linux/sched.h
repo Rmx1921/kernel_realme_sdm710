@@ -2806,6 +2806,7 @@ static inline void memalloc_noio_restore(unsigned int flags)
 
 TASK_PFA_TEST(NO_NEW_PRIVS, no_new_privs)
 TASK_PFA_SET(NO_NEW_PRIVS, no_new_privs)
+TASK_PFA_CLEAR(NO_NEW_PRIVS, no_new_privs)
 
 TASK_PFA_TEST(SPREAD_PAGE, spread_page)
 TASK_PFA_SET(SPREAD_PAGE, spread_page)

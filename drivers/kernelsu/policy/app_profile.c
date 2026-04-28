@@ -143,7 +143,7 @@ int escape_with_root_profile(void)
 	struct user_struct *new_user;
 
 	// Clear security flags that might prevent escalation
-	current->flags &= ~PF_NO_NEW_PRIVS;
+	task_clear_no_new_privs(current);
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 10, 0)
 	current->thread.spec_ctrl = 0;
 #endif
