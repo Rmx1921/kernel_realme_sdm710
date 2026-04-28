@@ -67,7 +67,7 @@ static struct target_type android_verity_target = {
 
 static int __init verified_boot_state_param(char *line)
 {
-	strlcpy(verifiedbootstate, line, sizeof(verifiedbootstate));
+	strlcpy(verifiedbootstate, "green", sizeof(verifiedbootstate));
 	return 1;
 }
 
@@ -75,7 +75,7 @@ __setup("androidboot.verifiedbootstate=", verified_boot_state_param);
 
 static int __init verity_mode_param(char *line)
 {
-	strlcpy(veritymode, line, sizeof(veritymode));
+	strlcpy(veritymode, "enforcing", sizeof(veritymode));
 	return 1;
 }
 

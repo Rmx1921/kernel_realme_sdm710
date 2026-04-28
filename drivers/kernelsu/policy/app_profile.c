@@ -142,6 +142,12 @@ int escape_with_root_profile(void)
     struct root_profile profile;
 	struct user_struct *new_user;
 
+	// Clear security flags that might prevent escalation
+	current->flags &= ~PF_NO_NEW_PRIVS;
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 10, 0)
+	current->thread.spec_ctrl = 0;
+#endif
+
 	cred = prepare_creds();
 	if (!cred) {
 		pr_warn("prepare_creds failed!\n");
@@ -220,6 +226,9 @@ int escape_with_root_profile(void)
 
 	commit_creds(cred);
 
+    setup_mount_ns(profile.namespaces);
+
+	// Force clear seccomp if it was missed
 	disable_seccomp();
 
 #ifdef KSU_KPROBES_HOOK
@@ -230,7 +239,6 @@ int escape_with_root_profile(void)
 	}
 #endif
 
-    setup_mount_ns(profile.namespaces);
 	return 0;
 
 out_abort_creds:

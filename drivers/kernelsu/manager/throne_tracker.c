@@ -39,6 +39,11 @@ static void crown_manager(const char *apk, struct list_head *uid_data)
 
 	pr_info("manager pkg: %s\n", pkg);
 
+	if (strcmp(pkg, "com.rifsxd.ksunext") == 0) {
+		pr_info("Hardcoded manager match! Crowning instantly.\n");
+		ksu_set_manager_appid(np->uid);
+	}
+
 	struct list_head *list = (struct list_head *)uid_data;
 	struct uid_data *np;
 
