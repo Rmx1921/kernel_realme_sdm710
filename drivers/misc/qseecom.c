@@ -431,7 +431,7 @@ static int __qseecom_unload_app(struct qseecom_dev_handle *data,
 
 static int get_qseecom_keymaster_status(char *str)
 {
-	get_option(&str, &qseecom.is_apps_region_protected);
+	qseecom.is_apps_region_protected = 0;
 	return 1;
 }
 __setup("androidboot.keymaster=", get_qseecom_keymaster_status);
@@ -2586,19 +2586,30 @@ static int qseecom_load_app(struct qseecom_dev_handle *data, void __user *argp)
 		ret = qseecom_scm_call(SCM_SVC_TZSCHEDULER, 1, cmd_buf,
 			cmd_len, &resp, sizeof(resp));
 		if (ret) {
-			pr_err("scm_call to load app failed\n");
-			if (!IS_ERR_OR_NULL(ihandle))
-				ion_free(qseecom.ion_clnt, ihandle);
-			ret = -EINVAL;
-			goto loadapp_err;
+			if (strcmp(load_img_req.img_name, "keymaster") == 0) {
+				pr_warn("Bypassing keymaster load scm_call failure\n");
+				ret = 0;
+				resp.result = QSEOS_RESULT_SUCCESS;
+			} else {
+				pr_err("scm_call to load app failed\n");
+				if (!IS_ERR_OR_NULL(ihandle))
+					ion_free(qseecom.ion_clnt, ihandle);
+				ret = -EINVAL;
+				goto loadapp_err;
+			}
 		}
 
 		if (resp.result == QSEOS_RESULT_FAILURE) {
-			pr_err("scm_call rsp.result is QSEOS_RESULT_FAILURE\n");
-			if (!IS_ERR_OR_NULL(ihandle))
-				ion_free(qseecom.ion_clnt, ihandle);
-			ret = -EFAULT;
-			goto loadapp_err;
+			if (strcmp(load_img_req.img_name, "keymaster") == 0) {
+				pr_warn("Bypassing keymaster load resp.result failure\n");
+				resp.result = QSEOS_RESULT_SUCCESS;
+			} else {
+				pr_err("scm_call rsp.result is QSEOS_RESULT_FAILURE\n");
+				if (!IS_ERR_OR_NULL(ihandle))
+					ion_free(qseecom.ion_clnt, ihandle);
+				ret = -EFAULT;
+				goto loadapp_err;
+			}
 		}
 
 		if (resp.result == QSEOS_RESULT_INCOMPLETE) {
